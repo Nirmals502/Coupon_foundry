@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.Login_screen"></activity>
+        <activity android:name=".View.Home_screen"></activity>
+        <activity android:name=".View.Login_screen" />
 
         <meta-data
             android:name="com.google.android.actions"

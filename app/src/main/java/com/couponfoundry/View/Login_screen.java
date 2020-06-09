@@ -2,6 +2,7 @@ package com.couponfoundry.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.couponfoundry.Animation.Shake_animation;
 import com.couponfoundry.Model.Post_isdeviceexist;
 import com.couponfoundry.Model.Response_isdevice_exist;
 import com.couponfoundry.R;
@@ -38,6 +40,10 @@ public class Login_screen extends AppCompatActivity {
     RelativeLayout Rlv_avi;
     @BindView(R.id.avi)
     AVLoadingIndicatorView avi;
+    @BindView(R.id.Rlv_not_registered)
+    RelativeLayout Rlv_notregisted;
+    @BindView(R.id.btn_confirm)
+    Button Register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,12 @@ public class Login_screen extends AppCompatActivity {
 
     @OnClick(R.id.button)
     void Login() {
+
+        if (Editext_phone.getText().toString().contentEquals("")) {
+            Shake_animation shkanim = new Shake_animation();
+            Editext_phone.startAnimation(shkanim.shakeError());
+            return;
+        }
         avi.show();
         Rlv_avi.setVisibility(View.VISIBLE);
         Post_isdeviceexist user = new Post_isdeviceexist("login", androidId);
@@ -66,9 +78,10 @@ public class Login_screen extends AppCompatActivity {
                 try {
                     Response_isdevice_exist response_ = response.body();
                     String status = response_.status;
+                    avi.hide();
+                    Rlv_avi.setVisibility(View.GONE);
                     if (status.contentEquals("success")) {
-                        avi.hide();
-                        Rlv_avi.setVisibility(View.GONE);
+
                         String str_member = response_.member;
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Login_screen.this);
                         SharedPreferences.Editor editor = prefs.edit();
@@ -76,7 +89,12 @@ public class Login_screen extends AppCompatActivity {
                         editor.apply();
                         Activity_log activity_log = new Activity_log();
                         activity_log.Activity_log(Login_screen.this, "new", "login");
-
+                        Intent i = new Intent(Login_screen.this,
+                                Home_screen.class);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        Rlv_notregisted.setVisibility(View.VISIBLE);
                     }
 
 
@@ -85,6 +103,7 @@ public class Login_screen extends AppCompatActivity {
                     Toast.makeText(Login_screen.this, "Device does not exist", Toast.LENGTH_LONG).show();
                     avi.hide();
                     Rlv_avi.setVisibility(View.GONE);
+                    Rlv_notregisted.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -97,5 +116,13 @@ public class Login_screen extends AppCompatActivity {
 
             }
         });
+    }
+
+    @OnClick(R.id.btn_confirm)
+    void Register() {
+        Intent i = new Intent(Login_screen.this,
+                Register_screen.class);
+        startActivity(i);
+        finish();
     }
 }

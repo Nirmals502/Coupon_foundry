@@ -61,7 +61,6 @@ public class Register_screen extends AppCompatActivity {
         Call<Response_isdevice_exist> call1 = apiInterface.isdeviceexist(user);
         avi.show();
         Rlv_avi.setVisibility(View.VISIBLE);
-        avi.dispatchWindowFocusChanged(true);
 
         call1.enqueue(new Callback<Response_isdevice_exist>() {
             @Override
@@ -106,7 +105,9 @@ public class Register_screen extends AppCompatActivity {
             Editext_phone.startAnimation(shkanim.shakeError());
             return;
         }
-        register_device Register = new register_device("register", "5674566665htyt67", Editext_phone.getText().toString(), "bk3RNwTe3H0:CI2k_HHwgIpo");
+        avi.show();
+        Rlv_avi.setVisibility(View.VISIBLE);
+        register_device Register = new register_device("register", androidId, Editext_phone.getText().toString(), "bk3RNwTe3H0:CI2k_HHwgIpo");
         Call<Response_isdevice_exist> call1 = apiInterface.Register(Register);
         call1.enqueue(new Callback<Response_isdevice_exist>() {
             @Override
@@ -115,6 +116,8 @@ public class Register_screen extends AppCompatActivity {
                 try {
                     Response_isdevice_exist user1 = response.body();
                     String success = user1.status;
+                    avi.hide();
+                    Rlv_avi.setVisibility(View.GONE);
                     if (success.contentEquals("success")) {
                         String str_member = user1.member;
                         Toast.makeText(Register_screen.this, "Registered successfully with member...." + str_member, Toast.LENGTH_LONG).show();
@@ -124,6 +127,10 @@ public class Register_screen extends AppCompatActivity {
                         editor.apply();
                         Activity_log activity_log = new Activity_log();
                         activity_log.Activity_log(Register_screen.this, "new", "register");
+                        Intent i = new Intent(Register_screen.this,
+                                Home_screen.class);
+                        startActivity(i);
+                        finish();
                     }
 
 
@@ -151,7 +158,9 @@ public class Register_screen extends AppCompatActivity {
             Editext_phone.startAnimation(shkanim.shakeError());
             return;
         }
-        register_device Register = new register_device("reregister", "5674566665htyt67", Editext_phone.getText().toString(), "bk3RNwTe3H0:CI2k_HHwgIpo");
+        avi.show();
+        Rlv_avi.setVisibility(View.VISIBLE);
+        register_device Register = new register_device("reregister", androidId, Editext_phone.getText().toString(), "bk3RNwTe3H0:CI2k_HHwgIpo");
         Call<Response_isdevice_exist> call1 = apiInterface.Register(Register);
         call1.enqueue(new Callback<Response_isdevice_exist>() {
             @Override
@@ -160,6 +169,8 @@ public class Register_screen extends AppCompatActivity {
                 try {
                     Response_isdevice_exist user1 = response.body();
                     String success = user1.status;
+                    avi.hide();
+                    Rlv_avi.setVisibility(View.GONE);
                     if (success.contentEquals("success")) {
                         String str_member = user1.member;
                         Toast.makeText(Register_screen.this, "Registered successfully with member...." + str_member, Toast.LENGTH_LONG).show();
@@ -169,6 +180,10 @@ public class Register_screen extends AppCompatActivity {
                         editor.apply();
                         Activity_log activity_log = new Activity_log();
                         activity_log.Activity_log(Register_screen.this, "new", "reregister");
+                        Intent i = new Intent(Register_screen.this,
+                                Home_screen.class);
+                        startActivity(i);
+                        finish();
                     }
 
 
