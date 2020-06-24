@@ -6,24 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.couponfoundry.Model.Offer_list;
-import com.couponfoundry.Model.Post_isdeviceexist;
 import com.couponfoundry.Model.Post_offer_list;
-import com.couponfoundry.Model.Response_isdevice_exist;
 import com.couponfoundry.R;
 import com.couponfoundry.adapter.Coupon_list;
-import com.couponfoundry.rest.APIClient;
 import com.couponfoundry.rest.APIInterface;
 import com.couponfoundry.rest.Activity_log;
 import com.couponfoundry.rest.Api_client_with_member;
@@ -39,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class View_coupon extends AppCompatActivity {
+public class View_my_saved_coupon extends AppCompatActivity {
     APIInterface apiInterface;
     @BindView(R.id.list)
     ListView Lv_list;
@@ -56,13 +50,13 @@ public class View_coupon extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_coupon);
+        setContentView(R.layout.activity_view_my_saved_coupon);
         ButterKnife.bind(this);
         Update_token update_token = new Update_token();
         update_token.Update_token(this);
         apiInterface = Api_client_with_member.getClient(this).create(APIInterface.class);
         Post_offer_list offer_list = new Post_offer_list("list", "xwmcoupon");
-        Call<Offer_list> call1 = apiInterface.Offer_list(offer_list);
+        Call<Offer_list> call1 = apiInterface.View_Save_offer(offer_list);
         avi.show();
         Rlv_avi.setVisibility(View.VISIBLE);
         avi.dispatchWindowFocusChanged(true);
@@ -76,10 +70,10 @@ public class View_coupon extends AppCompatActivity {
                     avi.hide();
                     Rlv_avi.setVisibility(View.GONE);
                     ArrayList<Offer_list.Datum> offerlist = response_.offers;
-                    Coupon_list adapter = new Coupon_list(View_coupon.this, offerlist,"SAVE");
+                    Coupon_list adapter = new Coupon_list(View_my_saved_coupon.this, offerlist,"OPEN");
                     Lv_list.setAdapter(adapter);
                     Activity_log activity_log = new Activity_log();
-                    activity_log.Activity_log(View_coupon.this, "new", "search");
+                    activity_log.Activity_log(View_my_saved_coupon.this, "new", "myoffers");
                 } catch (java.lang.NullPointerException e) {
                     e.printStackTrace();
 
@@ -102,7 +96,7 @@ public class View_coupon extends AppCompatActivity {
     }
     @OnClick(R.id.imageView_home)
     void Home(){
-        Intent i = new Intent(View_coupon.this,
+        Intent i = new Intent(View_my_saved_coupon.this,
                 Home_screen.class);
         startActivity(i);
         finish();

@@ -24,5 +24,11 @@ public class Offer_list {
         public String retailer;
         @SerializedName("logo")
         public String logo;
+        @SerializedName("banner_title")
+        public String banner_title;
+        @SerializedName("banner_subtitle")
+        public String banner_subtitle;
+        @SerializedName("product_information")
+        public String product_information;
     }
 }

@@ -23,6 +23,7 @@ import com.couponfoundry.Model.Offer_list;
 import com.couponfoundry.R;
 import com.couponfoundry.View.Coupon_detail;
 import com.couponfoundry.View.MainActivity;
+import com.couponfoundry.View.Redeem_screen;
 import com.couponfoundry.View.Splash;
 
 import java.util.ArrayList;
@@ -34,9 +35,10 @@ public class Coupon_list extends BaseAdapter {
     String Str_type = "";
 
     //public constructor
-    public Coupon_list(Context context, ArrayList<Offer_list.Datum> data) {
+    public Coupon_list(Context context, ArrayList<Offer_list.Datum> data, String Screen) {
         this.context = context;
         this.data = data;
+        this.Str_type = Screen;
     }
 
     @Override
@@ -81,13 +83,22 @@ public class Coupon_list extends BaseAdapter {
         viewHolder.Txt_program.setText(data.get(position).program);
         viewHolder.Txt_retailor.setText(data.get(position).retailer);
         viewHolder.Txt_expriy.setText(data.get(position).expiry_date);
+        viewHolder.Btn_save.setText(Str_type);
         viewHolder.Btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,
-                        Coupon_detail.class);
-                i.putExtra("offerid", data.get(position).offer_id);
-                context.startActivity(i);
+                if(Str_type.contentEquals("SAVE")){
+                    Intent i = new Intent(context,
+                            Coupon_detail.class);
+                    i.putExtra("offerid", data.get(position).offer_id);
+                    context.startActivity(i);
+                }else{
+                    Intent i = new Intent(context,
+                            Redeem_screen.class);
+                    i.putExtra("offerid", data.get(position).offer_id);
+                    context.startActivity(i);
+                }
+
 
             }
         });

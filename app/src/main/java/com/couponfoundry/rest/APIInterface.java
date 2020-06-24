@@ -50,4 +50,16 @@ public interface APIInterface {
     @Headers("Content-Type: application/json")
     @POST("/api/v1/offers")
     Call<Response_view_offer> View_offer(@Body Post_view_offer View_offer);
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/v1/myoffers")
+    Call<Response_view_offer> Save_offer(@Body Post_view_offer Save_offer);
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/v1/myoffers")
+    Call<Offer_list> View_Save_offer(@Body Post_offer_list Save_offer);
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/v1/myoffers")
+    Call<Response_view_offer> Redeem_offer_view(@Body Post_view_offer View_offer);
 }

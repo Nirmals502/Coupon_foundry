@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.Coupon_detail"></activity>
+        <activity android:name=".View.Redeem_screen"></activity>
+        <activity android:name=".View.View_my_saved_coupon" />
+        <activity android:name=".View.Coupon_detail" />
         <activity android:name=".View.View_coupon" />
         <activity android:name=".View.Home_screen" />
         <activity android:name=".View.Login_screen" />

@@ -27,4 +27,6 @@ public class Response_view_offer {
     public String banner_subtitle;
     @SerializedName("product_information")
     public String product_information;
+    @SerializedName("status")
+    public String status;
 }
