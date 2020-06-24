@@ -37,6 +37,7 @@ public class Api_client_with_member {
                         .addHeader("Authorization",
                                 Str_token)
                         //.addHeader("Accept", "application/json, text/plain, */*")
+
                         .addHeader("channel", "Airos Group")
                         .addHeader("brand", "xWrist")
                         .addHeader("country", "us")

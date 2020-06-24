@@ -2,6 +2,7 @@ package com.couponfoundry.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ public class Register_screen extends AppCompatActivity {
     AVLoadingIndicatorView avi;
     @BindView(R.id.Rlv_avi)
     RelativeLayout Rlv_avi;
+    String Str_firebase_token="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,10 @@ public class Register_screen extends AppCompatActivity {
         setContentView(R.layout.activity_register_screen);
         ButterKnife.bind(this);
         apiInterface = APIClient.getClient(this).create(APIInterface.class);
-        androidId = Settings.Secure.getString(getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        Str_firebase_token= Fcm_token(this);
+//        androidId = Settings.Secure.getString(getContentResolver(),
+//                Settings.Secure.ANDROID_ID);
+        androidId = "76gg576tt8yh67";
         Post_isdeviceexist user = new Post_isdeviceexist("isdeviceexist", androidId);
         Call<Response_isdevice_exist> call1 = apiInterface.isdeviceexist(user);
         avi.show();
@@ -80,7 +84,7 @@ public class Register_screen extends AppCompatActivity {
 
                 } catch (java.lang.NullPointerException e) {
                     e.printStackTrace();
-                    Toast.makeText(Register_screen.this, "Device does not exist", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(Register_screen.this, "Device does not exist", Toast.LENGTH_LONG).show();
                     avi.hide();
                     Rlv_avi.setVisibility(View.GONE);
                 }
@@ -107,7 +111,8 @@ public class Register_screen extends AppCompatActivity {
         }
         avi.show();
         Rlv_avi.setVisibility(View.VISIBLE);
-        register_device Register = new register_device("register", androidId, Editext_phone.getText().toString(), "bk3RNwTe3H0:CI2k_HHwgIpo");
+
+        register_device Register = new register_device("register", androidId, Editext_phone.getText().toString(), Str_firebase_token);
         Call<Response_isdevice_exist> call1 = apiInterface.Register(Register);
         call1.enqueue(new Callback<Response_isdevice_exist>() {
             @Override
@@ -136,6 +141,8 @@ public class Register_screen extends AppCompatActivity {
 
                 } catch (java.lang.NullPointerException e) {
                     e.printStackTrace();
+                    avi.hide();
+                    Rlv_avi.setVisibility(View.GONE);
                 }
 
             }
@@ -160,7 +167,7 @@ public class Register_screen extends AppCompatActivity {
         }
         avi.show();
         Rlv_avi.setVisibility(View.VISIBLE);
-        register_device Register = new register_device("reregister", androidId, Editext_phone.getText().toString(), "bk3RNwTe3H0:CI2k_HHwgIpo");
+        register_device Register = new register_device("reregister", androidId, Editext_phone.getText().toString(), Str_firebase_token);
         Call<Response_isdevice_exist> call1 = apiInterface.Register(Register);
         call1.enqueue(new Callback<Response_isdevice_exist>() {
             @Override
@@ -201,5 +208,10 @@ public class Register_screen extends AppCompatActivity {
 
             }
         });
+    }
+    public static String Fcm_token(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences((ctx));
+        String Str_tocken = prefs.getString("Firebase_token", "");
+        return Str_tocken;
     }
 }

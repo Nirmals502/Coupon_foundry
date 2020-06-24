@@ -3,13 +3,19 @@ package com.couponfoundry.View;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.couponfoundry.Firebase.Constants;
+import com.couponfoundry.Firebase.MyNotificationManager;
 import com.couponfoundry.Model.Post_isdeviceexist;
 import com.couponfoundry.Model.Post_to_get_token;
 import com.couponfoundry.Model.Response_isdevice_exist;
@@ -48,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         update_token.Update_token(this);
 
     }
+
+
 
     @OnClick(R.id.Btn_Register)
     void Register() {

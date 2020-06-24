@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "191915704406",
+    "firebase_url": "https://coupon-foundry-ff286.firebaseio.com",
+    "project_id": "coupon-foundry-ff286",
+    "storage_bucket": "coupon-foundry-ff286.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191915704406:android:1c0509480982a54b553bf7",
+        "android_client_info": {
+          "package_name": "com.couponfoundry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191915704406-1gtjp3imq1dku6pt0rpiu2u2ent3lld4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.couponfoundry",
+            "certificate_hash": "84bd918b8d32c1165f0b9c7022aae83b9919c189"
+          }
+        },
+        {
+          "client_id": "191915704406-cbhb7lo2uuu0hsdmvd4l9rf4ho0jbmp3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAOCqzM9Pwj3wXaAneAM6d4RRFzRD4q6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191915704406-cbhb7lo2uuu0hsdmvd4l9rf4ho0jbmp3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
