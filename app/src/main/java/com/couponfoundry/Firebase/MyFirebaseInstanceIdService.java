@@ -1,5 +1,6 @@
 package com.couponfoundry.Firebase;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -24,7 +25,7 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
         //now we will have the token
         String token = FirebaseInstanceId.getInstance().getToken();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs =getSharedPreferences("COUPON FOUNDRYY", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("Firebase_token", token);
         editor.apply();

@@ -4,10 +4,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,7 +18,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.couponfoundry.Model.Offer_list;
+import com.couponfoundry.Model.Post_logout;
+import com.couponfoundry.Model.Post_notification;
 import com.couponfoundry.Model.Post_offer_list;
+import com.couponfoundry.Model.Response_view_offer;
 import com.couponfoundry.R;
 import com.couponfoundry.adapter.Coupon_list;
 import com.couponfoundry.rest.APIInterface;
@@ -45,6 +51,8 @@ public class View_my_saved_coupon extends AppCompatActivity {
     RelativeLayout Rlv_avi;
     @BindView(R.id.avi)
     AVLoadingIndicatorView avi;
+    int int_size = 0;
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -70,8 +78,48 @@ public class View_my_saved_coupon extends AppCompatActivity {
                     avi.hide();
                     Rlv_avi.setVisibility(View.GONE);
                     ArrayList<Offer_list.Datum> offerlist = response_.offers;
-                    Coupon_list adapter = new Coupon_list(View_my_saved_coupon.this, offerlist,"OPEN");
+                    Coupon_list adapter = new Coupon_list(View_my_saved_coupon.this, offerlist, "OPEN");
                     Lv_list.setAdapter(adapter);
+
+                    int_size = offerlist.size();
+                    String Str_size = String.valueOf(int_size);
+                    if (Str_size.contentEquals("0")) {
+                        return;
+                    }
+                    Post_notification Push_notification = new Post_notification("send", "Offers are Available", "You have " + Str_size + " Saved Offers");
+                    Call<Response_view_offer> call_push = apiInterface.Notification(Push_notification);
+                    avi.show();
+                    Rlv_avi.setVisibility(View.VISIBLE);
+                    avi.dispatchWindowFocusChanged(true);
+
+                    call_push.enqueue(new Callback<Response_view_offer>() {
+                        @Override
+                        public void onResponse(Call<Response_view_offer> call, Response<Response_view_offer> response) {
+
+                            try {
+                                Response_view_offer response_ = response.body();
+                                avi.hide();
+                                Rlv_avi.setVisibility(View.GONE);
+
+                            } catch (java.lang.NullPointerException e) {
+                                e.printStackTrace();
+
+                                avi.hide();
+                                Rlv_avi.setVisibility(View.GONE);
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Response_view_offer> call, Throwable t) {
+                            call.cancel();
+                            Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            avi.hide();
+                            Rlv_avi.setVisibility(View.GONE);
+
+                        }
+                    });
                     Activity_log activity_log = new Activity_log();
                     activity_log.Activity_log(View_my_saved_coupon.this, "new", "myoffers");
                 } catch (java.lang.NullPointerException e) {
@@ -94,13 +142,85 @@ public class View_my_saved_coupon extends AppCompatActivity {
             }
         });
     }
+
     @OnClick(R.id.imageView_home)
-    void Home(){
+    void Home() {
         Intent i = new Intent(View_my_saved_coupon.this,
                 Home_screen.class);
         startActivity(i);
         finish();
     }
+
+    @OnClick(R.id.imageView4)
+    void Logout() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to Logout ?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //System.exit(0);
+                        String androidId = Settings.Secure.getString(getContentResolver(),
+                                Settings.Secure.ANDROID_ID);
+                        Post_logout Logout = new Post_logout("logout", androidId);
+                        Call<Response_view_offer> call1 = apiInterface.Logout(Logout);
+                        avi.show();
+                        Rlv_avi.setVisibility(View.VISIBLE);
+                        avi.dispatchWindowFocusChanged(true);
+
+                        call1.enqueue(new Callback<Response_view_offer>() {
+                            @Override
+                            public void onResponse(Call<Response_view_offer> call, Response<Response_view_offer> response) {
+
+                                try {
+                                    Response_view_offer response_ = response.body();
+                                    avi.hide();
+                                    Rlv_avi.setVisibility(View.GONE);
+
+                                    Activity_log activity_log = new Activity_log();
+                                    activity_log.Activity_log(View_my_saved_coupon.this, "new", "logout");
+
+                                    SharedPreferences preferences = getSharedPreferences("COUPON FOUNDRY", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.clear();
+                                    editor.apply();
+                                    Intent i = new Intent(View_my_saved_coupon.this,
+                                            Login_screen.class);
+                                    startActivity(i);
+                                    finish();
+                                } catch (java.lang.NullPointerException e) {
+                                    e.printStackTrace();
+
+                                    avi.hide();
+                                    Rlv_avi.setVisibility(View.GONE);
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Response_view_offer> call, Throwable t) {
+                                call.cancel();
+                                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                                avi.hide();
+                                Rlv_avi.setVisibility(View.GONE);
+
+                            }
+                        });
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+
+    }
+
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

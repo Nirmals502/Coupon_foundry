@@ -26,6 +26,8 @@ public class Api_client_with_member {
 
     public static Retrofit getClient(Context mContext) {
         String Str_token = Get_tocken(mContext);
+       // String Str_token = "3C44B48850AF799094F663E2F1603E6B67926D3767EA827200D2CCF9DCAA0B827EA11E9DE0D45B090FAAD6EF9A2C9BB779DC472302230E9ADC24499280CC0CD9";
+
         String member = Get_member(mContext);
 
         OkHttpClient.Builder oktHttpClient = new OkHttpClient.Builder();

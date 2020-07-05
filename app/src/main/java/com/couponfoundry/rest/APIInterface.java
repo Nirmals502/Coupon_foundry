@@ -4,6 +4,8 @@ import com.couponfoundry.Model.Offer_list;
 import com.couponfoundry.Model.Post_activity;
 import com.couponfoundry.Model.Post_activity_view_offer;
 import com.couponfoundry.Model.Post_isdeviceexist;
+import com.couponfoundry.Model.Post_logout;
+import com.couponfoundry.Model.Post_notification;
 import com.couponfoundry.Model.Post_offer_list;
 import com.couponfoundry.Model.Post_to_get_token;
 import com.couponfoundry.Model.Post_view_offer;
@@ -62,4 +64,12 @@ public interface APIInterface {
     @Headers("Content-Type: application/json")
     @POST("/api/v1/myoffers")
     Call<Response_view_offer> Redeem_offer_view(@Body Post_view_offer View_offer);
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/v1/notification")
+    Call<Response_view_offer> Notification(@Body Post_notification View_offer);
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/v1/members")
+    Call<Response_view_offer> Logout(@Body Post_logout Post_logout);
 }

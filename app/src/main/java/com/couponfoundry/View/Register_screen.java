@@ -60,9 +60,9 @@ public class Register_screen extends AppCompatActivity {
         ButterKnife.bind(this);
         apiInterface = APIClient.getClient(this).create(APIInterface.class);
         Str_firebase_token= Fcm_token(this);
-//        androidId = Settings.Secure.getString(getContentResolver(),
-//                Settings.Secure.ANDROID_ID);
-        androidId = "76gg576tt8yh67";
+        androidId = Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+      //  androidId = "76gg57645tt8yh67";
         Post_isdeviceexist user = new Post_isdeviceexist("isdeviceexist", androidId);
         Call<Response_isdevice_exist> call1 = apiInterface.isdeviceexist(user);
         avi.show();
@@ -211,8 +211,8 @@ public class Register_screen extends AppCompatActivity {
             }
         });
     }
-    public static String Fcm_token(Context ctx) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences((ctx));
+    public String Fcm_token(Context ctx) {
+        SharedPreferences prefs = getSharedPreferences("COUPON FOUNDRYY", Context.MODE_PRIVATE);
         String Str_tocken = prefs.getString("Firebase_token", "");
         return Str_tocken;
     }
