@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/welcome"
     tools:context=".View.Register_screen">
 
     <RelativeLayout
@@ -11,8 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#547D7C80"
-        android:visibility="gone"
         android:translationZ="90dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +34,7 @@
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="0dp"
-        android:layout_height="190dp"
+        android:layout_height="120dp"
         android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -46,10 +47,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
+        android:fontFamily="@font/roboto"
         android:gravity="center"
         android:text="Please enter the mobile phone number associated with this device"
         android:textColor="#4E3F3F"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +66,7 @@
         android:layout_marginTop="65dp"
         android:background="@drawable/roundedittext"
         android:ems="10"
+        android:fontFamily="@font/roboto"
         android:gravity="center"
         android:inputType="textPersonName"
         android:text="+1"
@@ -83,6 +86,7 @@
         android:layout_marginRight="95dp"
         android:background="@drawable/roundedittext"
         android:ems="10"
+        android:fontFamily="@font/roboto"
         android:inputType="phone"
         android:paddingLeft="10dp"
         android:textColor="#5A5757"
@@ -194,7 +198,7 @@
             android:gravity="center"
             android:text="We sent a security code to your mobile device, please enter it here "
             android:textColor="#4E3F3F"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/button_register"

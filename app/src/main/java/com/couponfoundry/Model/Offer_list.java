@@ -30,5 +30,15 @@ public class Offer_list {
         public String banner_subtitle;
         @SerializedName("product_information")
         public String product_information;
+        @SerializedName("mobile")
+        public String mobile;
+        @SerializedName("online")
+        public String online;
+        @SerializedName("phone")
+        public String phone;
+        @SerializedName("saved")
+        public String saved;
+        @SerializedName("print")
+        public String print;
     }
 }

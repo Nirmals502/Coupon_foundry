@@ -29,4 +29,31 @@ public class Response_view_offer {
     public String product_information;
     @SerializedName("status")
     public String status;
+    @SerializedName("barcode")
+    public String barcode;
+    @SerializedName("phone")
+    public String phone;
+    @SerializedName("promo_code")
+    public String promo_code;
+    @SerializedName("product_url")
+    public String product_url;
+    @SerializedName("telephone")
+    public String telephone;
+    @SerializedName("banner_image")
+    public String banner_image;
+    @SerializedName("affiliate_data")
+    public String affiliate_data;
+    @SerializedName("mobile")
+    public String mobile;
+    @SerializedName("online")
+    public String online;
+    //banner_header
+    @SerializedName("banner_header")
+    public String banner_header;
+    @SerializedName("print")
+    public String print;
+    @SerializedName("saved")
+    public String saved;
+    //affiliate_data
+
 }

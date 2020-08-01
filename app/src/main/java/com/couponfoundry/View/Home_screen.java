@@ -52,10 +52,10 @@ public class Home_screen extends AppCompatActivity {
     ImageView Img_logout;
     private PrefManager prefManager;
     APIInterface apiInterface;
-    @BindView(R.id.Rlv_avi)
-    RelativeLayout Rlv_avi;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView avi;
+//    @BindView(R.id.Rlv_avi)
+//    RelativeLayout Rlv_avi;
+//    @BindView(R.id.avi)
+//    AVLoadingIndicatorView avi;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -99,18 +99,18 @@ public class Home_screen extends AppCompatActivity {
                                 Settings.Secure.ANDROID_ID);
                         Post_logout Logout = new Post_logout("logout", androidId);
                         Call<Response_view_offer> call1 = apiInterface.Logout(Logout);
-                        avi.show();
-                        Rlv_avi.setVisibility(View.VISIBLE);
-                        avi.dispatchWindowFocusChanged(true);
+//                        avi.show();
+//                        Rlv_avi.setVisibility(View.VISIBLE);
+//                        avi.dispatchWindowFocusChanged(true);
 
                         call1.enqueue(new Callback<Response_view_offer>() {
                             @Override
                             public void onResponse(Call<Response_view_offer> call, Response<Response_view_offer> response) {
 
                                 try {
-                                    Response_view_offer response_ = response.body();
-                                    avi.hide();
-                                    Rlv_avi.setVisibility(View.GONE);
+//                                    Response_view_offer response_ = response.body();
+//                                    avi.hide();
+//                                    Rlv_avi.setVisibility(View.GONE);
 
                                     Activity_log activity_log = new Activity_log();
                                     activity_log.Activity_log(Home_screen.this, "new", "logout");
@@ -120,14 +120,14 @@ public class Home_screen extends AppCompatActivity {
                                     editor.clear();
                                     editor.apply();
                                     Intent i = new Intent(Home_screen.this,
-                                            Login_screen.class);
+                                            Welcome_screen.class);
                                     startActivity(i);
                                     finish();
                                 } catch (java.lang.NullPointerException e) {
                                     e.printStackTrace();
 
-                                    avi.hide();
-                                    Rlv_avi.setVisibility(View.GONE);
+//                                    avi.hide();
+//                                    Rlv_avi.setVisibility(View.GONE);
 
                                 }
 
@@ -137,8 +137,8 @@ public class Home_screen extends AppCompatActivity {
                             public void onFailure(Call<Response_view_offer> call, Throwable t) {
                                 call.cancel();
                                 Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
-                                avi.hide();
-                                Rlv_avi.setVisibility(View.GONE);
+//                                avi.hide();
+//                                Rlv_avi.setVisibility(View.GONE);
 
                             }
                         });

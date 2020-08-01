@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainActivity">
+    tools:context=".View.Welcome_screen">
 
 
     <Button
@@ -28,7 +28,7 @@
     <ImageView
         android:id="@+id/Img_logo"
         android:layout_width="0dp"
-        android:layout_height="190dp"
+        android:layout_height="130dp"
         android:layout_marginTop="40dp"
         android:contentDescription="TODO"
         android:src="@drawable/coupon"

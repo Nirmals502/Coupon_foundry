@@ -3,7 +3,9 @@ package com.couponfoundry.Firebase;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -14,6 +16,23 @@ import com.google.firebase.messaging.RemoteMessage;
 
 //class extending FirebaseMessagingService
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        Log.e("newToken", s);
+//Add your token in your sharepreferences.
+        getSharedPreferences("_", MODE_PRIVATE).edit().putString("fcm_token", s).apply();
+        SharedPreferences prefs = getSharedPreferences("COUPON FOUNDRYY", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("Firebase_token", s);
+        editor.apply();
+
+        //for now we are displaying the token in the log
+        //copy it as this method is called only when the new token is generated
+        //and usually new token is only generated when the app is reinstalled or the data is cleared
+        Log.d("MyRefreshedToken....", s);
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

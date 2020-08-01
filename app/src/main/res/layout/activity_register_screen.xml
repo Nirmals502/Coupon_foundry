@@ -1,211 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/welcome"
     tools:context=".View.Register_screen">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="0dp"
-        android:layout_height="190dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/coupon" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".View.Register_screen">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:gravity="center"
-        android:text="To register, please provide your\nmobile phone number associated\nwith this device"
-        android:textColor="#4E3F3F"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <Button
-        android:id="@+id/Butn_countrycode"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="65dp"
-        android:background="@drawable/roundedittext"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        android:text="+1"
-        android:textColor="#5A5757"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="65dp"
-        android:layout_marginEnd="95dp"
-        android:layout_marginRight="95dp"
-        android:background="@drawable/roundedittext"
-        android:ems="10"
-        android:inputType="phone"
-        android:paddingLeft="10dp"
-        android:textColor="#5A5757"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Butn_countrycode"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="50dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="65dp"
-        android:background="@drawable/roundedittext"
-        android:text=">"
-        android:textColor="#5A5757"
-        android:textSize="30dp"
-        app:layout_constraintStart_toEndOf="@+id/editText2"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <RelativeLayout
-        android:id="@+id/Rlv_already_registered"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="20dp"
-
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Butn_countrycode"
-        app:layout_constraintVertical_bias="0.0">
-
-        <Button
-            android:id="@+id/btn_confirm"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_below="@id/Txt_register"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="40dp"
-            android:background="@drawable/glossy_"
-            android:text="CONFIRM"
-
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/coupon" />
 
         <TextView
-            android:id="@+id/Txt_register"
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="false"
-            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp"
+            android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:text="This device is already registered\n Do you want to re-register?"
+            android:text="To register, please provide your\nmobile phone number associated\nwith this device"
             android:textColor="#4E3F3F"
-            android:textSize="20sp" />
-    </RelativeLayout>
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <RelativeLayout
-        android:id="@+id/Rlv_otp_"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-
-        android:layout_marginStart="20dp"
-
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Butn_countrycode"
-        app:layout_constraintVertical_bias="1.0">
-
-        <EditText
-            android:id="@+id/editText_otp"
-            android:layout_width="150dp"
+        <Button
+            android:id="@+id/Butn_countrycode"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_below="@id/txt_otp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginLeft="23dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@id/button_register"
             android:background="@drawable/roundedittext"
             android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:text="+1"
+            android:textColor="#5A5757"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="95dp"
+            android:layout_marginRight="95dp"
+            android:background="@drawable/roundedittext"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
             android:inputType="phone"
             android:paddingLeft="10dp"
             android:textColor="#5A5757"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/txt_otp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="We sent a security code to your mobile device, please enter it here "
-            android:textColor="#4E3F3F"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/Butn_countrycode"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <Button
-            android:id="@+id/button_register"
+            android:id="@+id/button"
             android:layout_width="50dp"
-            android:layout_height="50dp"
-
-            android:layout_below="@id/txt_otp"
-            android:layout_alignParentRight="true"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/roundedittext"
             android:text=">"
             android:textColor="#5A5757"
-            android:textSize="30dp" />
-    </RelativeLayout>
+            android:textSize="30dp"
+            app:layout_constraintStart_toEndOf="@+id/editText2"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <RelativeLayout
-        android:id="@+id/Rlv_avi"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#547D7C80"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/avi"
-            style="@style/AVLoadingIndicatorView"
-
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/Rlv_already_registered"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="visible"
-            app:indicatorColor="@color/colorPrimaryDark"
-            app:indicatorName="BallPulseIndicator" />
-    </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+            android:layout_marginStart="20dp"
+
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Butn_countrycode"
+            app:layout_constraintVertical_bias="0.0">
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/Txt_register"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/glossy_"
+                android:fontFamily="@font/roboto"
+
+                android:text="CONFIRM"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/Txt_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="false"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text="This device is already registered\n Do you want to re-register?"
+                android:textColor="#4E3F3F"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/Rlv_otp_"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="20dp"
+
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="50dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Butn_countrycode"
+            app:layout_constraintVertical_bias="0.0">
+
+            <EditText
+                android:id="@+id/editText_otp"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/txt_otp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@id/button_register"
+                android:background="@drawable/roundedittext"
+                android:ems="10"
+                android:fontFamily="@font/roboto"
+                android:inputType="phone"
+                android:paddingLeft="10dp"
+                android:textColor="#5A5757"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_otp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text="We sent a security code to your mobile device, please enter it here "
+                android:textColor="#4E3F3F"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/button_register"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+
+                android:layout_below="@id/txt_otp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/roundedittext"
+                android:text=">"
+                android:textColor="#5A5757"
+                android:textSize="30dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/Rlv_avi"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#547D7C80"
+            android:translationZ="90dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/avi"
+                style="@style/AVLoadingIndicatorView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorPrimaryDark"
+                app:indicatorName="BallPulseIndicator" />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

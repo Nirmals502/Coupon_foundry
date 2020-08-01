@@ -8,7 +8,8 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 
 import com.couponfoundry.R;
-import com.couponfoundry.View.MainActivity;
+import com.couponfoundry.View.Splash;
+import com.couponfoundry.View.Welcome_screen;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -36,7 +37,7 @@ public class MyNotificationManager {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(mCtx, Constants.CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setSmallIcon(R.drawable.launcher)
                         .setContentTitle(title)
                         .setContentText(body);
 
@@ -47,7 +48,7 @@ public class MyNotificationManager {
          *  But for your project you can customize it as you want
          * */
 
-        Intent resultIntent = new Intent(mCtx, MainActivity.class);
+        Intent resultIntent = new Intent(mCtx, Splash.class);
 
         /*
          *  Now we will create a pending intent

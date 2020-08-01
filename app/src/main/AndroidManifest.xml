@@ -3,42 +3,64 @@
     package="com.couponfoundry">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.Redeem_screen"></activity>
-        <activity android:name=".View.View_my_saved_coupon" />
-        <activity android:name=".View.Coupon_detail" />
-        <activity android:name=".View.View_coupon" />
-        <activity android:name=".View.Home_screen" />
-        <activity android:name=".View.Login_screen" />
+        <activity
+            android:name=".View.Redeem_screen"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".View.View_my_saved_coupon"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.Coupon_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.View_coupon"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.Home_screen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.Login_screen"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_config" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".View.Register_screen" />
-        <activity android:name=".View.Splash">
+        <activity
+            android:name=".View.Register_screen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.Splash"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.MainActivity" />
+        <activity
+            android:name=".View.Welcome_screen"
+            android:screenOrientation="portrait" />
 
-        <service android:name=".Firebase.MyFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".Firebase.MyFirebaseMessagingService">
+<!--        <service android:name=".Firebase.MyFirebaseInstanceIdService">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
+        <service android:name=".Firebase.MyFirebaseMessagingService"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

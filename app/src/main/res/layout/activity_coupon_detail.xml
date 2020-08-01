@@ -4,7 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EEF4F2"
     tools:context=".View.Home_screen">
+
+    <RelativeLayout
+        android:id="@+id/Container_"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@color/new_blue_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/roboto"
+            android:text="Coupon Foundry"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="false"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+            tools:ignore="VectorDrawableCompat" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@color/new_blue_color"
+        android:fontFamily="@font/roboto"
+        android:text="SAVE COUPON"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <RelativeLayout
         android:id="@+id/Rlv_avi"
@@ -37,6 +84,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:srcCompat="@drawable/ic_baseline_home_24"
@@ -45,8 +93,9 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="0dp"
-        android:layout_height="190dp"
+        android:layout_height="130dp"
         android:layout_marginTop="40dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,86 +108,144 @@
         android:layout_height="50dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:srcCompat="@drawable/ic_baseline_settings_24"
         tools:ignore="VectorDrawableCompat" />
 
-    <RelativeLayout
-        android:id="@+id/Container"
+    <ScrollView
+        android:id="@+id/Sv_"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="false"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="10dp"
-        android:background="@color/Background_color"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_home">
+        app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
-        <TextView
-            android:id="@+id/txt_expiry_date"
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:id="@+id/Container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/Txt_expiry_date"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_toRightOf="@id/logo"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/Txt_expiry_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txt_retailer"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_toRightOf="@id/logo"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/txt_program"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/logo"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:textColor="@color/new_blue_color"
+                android:textSize="17dp" />
 
-        <TextView
-            android:id="@+id/txt_retailer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/Txt_program"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_toRightOf="@id/logo"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/txt_expiry_date"
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/Txt_expiry_date"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:textColor="@color/new_blue_color" />
 
-        <Button
-            android:id="@+id/button_save"
-            android:layout_width="120dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/txt_expiry_date"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/glossy_"
-            android:text="Save"
-            android:textColor="@android:color/white" />
+            <TextView
+                android:id="@+id/Txt_expiry_date"
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_retailer"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:textColor="@color/new_blue_color" />
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_centerVertical="false"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="40dp"
-            app:srcCompat="@drawable/coupon" />
+            <TextView
+                android:id="@+id/txt_retailer"
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/Txt_program"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:textColor="@color/new_blue_color" />
 
-        <TextView
-            android:id="@+id/Txt_program"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="45dp"
-            android:layout_toRightOf="@id/logo"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:srcCompat="@drawable/coupon" />
+
+            <TextView
+                android:id="@+id/Txt_program"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_program"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:textColor="@color/new_blue_color"
+                android:textSize="17dp" />
+
+            <RelativeLayout
+                android:id="@+id/Rlv_reset"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@id/txt_expiry_date"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/button_save3"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="40dp"
+                    android:background="@drawable/glossy_"
+                    android:text="CLOSE"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/button_save2"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:background="@drawable/glossy_"
+                    android:text="CANCEL"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

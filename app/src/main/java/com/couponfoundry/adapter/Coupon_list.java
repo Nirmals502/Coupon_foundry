@@ -2,7 +2,6 @@ package com.couponfoundry.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +9,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.couponfoundry.Model.Offer_list;
 import com.couponfoundry.R;
 import com.couponfoundry.View.Coupon_detail;
-import com.couponfoundry.View.MainActivity;
 import com.couponfoundry.View.Redeem_screen;
-import com.couponfoundry.View.Splash;
 
 import java.util.ArrayList;
 
@@ -72,6 +64,10 @@ public class Coupon_list extends BaseAdapter {
             viewHolder.Txt_expriy = (TextView) convertView.findViewById(R.id.Txt_expiry_date);
             viewHolder.Btn_save = (Button) convertView.findViewById(R.id.button_save);
             viewHolder.Img_logo = (ImageView) convertView.findViewById(R.id.logo);
+            viewHolder.img_mobile = (ImageView) convertView.findViewById(R.id.Img_phone_cart);
+            viewHolder.img_cart = (ImageView) convertView.findViewById(R.id.instore);
+            viewHolder.imgphone = (ImageView) convertView.findViewById(R.id.phone_on);
+            viewHolder.img_print = (ImageView) convertView.findViewById(R.id.print_);
 
             result = convertView;
             convertView.setTag(viewHolder);
@@ -80,19 +76,40 @@ public class Coupon_list extends BaseAdapter {
             result = convertView;
 
         }
-        viewHolder.Txt_program.setText(data.get(position).program);
+        viewHolder.Txt_program.setText(data.get(position).banner_title);
         viewHolder.Txt_retailor.setText(data.get(position).retailer);
-        viewHolder.Txt_expriy.setText(data.get(position).expiry_date);
+        viewHolder.Txt_expriy.setText("Expires " + data.get(position).expiry_date);
         viewHolder.Btn_save.setText(Str_type);
+        if (data.get(position).mobile.contentEquals("true")) {
+            viewHolder.img_mobile.setImageResource(R.drawable.mobile_on);
+        } else {
+            viewHolder.img_mobile.setImageResource(R.drawable.mobile_off);
+        }
+        if (data.get(position).online.contentEquals("true")) {
+            viewHolder.img_cart.setImageResource(R.drawable.instore_on);
+        } else {
+            viewHolder.img_cart.setImageResource(R.drawable.instore_off);
+        }
+        if (data.get(position).phone.contentEquals("true")) {
+            viewHolder.imgphone.setImageResource(R.drawable.phone_on);
+        } else {
+            viewHolder.imgphone.setImageResource(R.drawable.phone_off);
+        }
+        if (data.get(position).print.contentEquals("true")) {
+            viewHolder.img_print.setImageResource(R.drawable.print_on);
+        } else {
+            viewHolder.img_print.setImageResource(R.drawable.print_off);
+        }
+
         viewHolder.Btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Str_type.contentEquals("SAVE")){
+                if (Str_type.contentEquals("SAVE")) {
                     Intent i = new Intent(context,
                             Coupon_detail.class);
                     i.putExtra("offerid", data.get(position).offer_id);
                     context.startActivity(i);
-                }else{
+                } else {
                     Intent i = new Intent(context,
                             Redeem_screen.class);
                     i.putExtra("offerid", data.get(position).offer_id);
@@ -117,6 +134,6 @@ public class Coupon_list extends BaseAdapter {
 class ViewHolder__ {
     TextView Txt_program, Txt_retailor, Txt_expriy;
     Button Btn_save;
-    ImageView Img_logo;
+    ImageView Img_logo, img_mobile, img_cart, imgphone, img_print;
 }
 
