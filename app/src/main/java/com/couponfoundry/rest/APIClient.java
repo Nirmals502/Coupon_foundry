@@ -28,10 +28,20 @@ public class APIClient {
     public static Retrofit retrofit = null;
     public static String Client = "z/9n}0YoMDl5";
     public static String Client_Secret = "0nRj$Zb$+UL=";
-
+    public static String Str_lat = "";
+    public static String Str_lng = "";
+    public static String Country_name = "";
 
     public static Retrofit getClient(Context mContext) {
         String Str_token = Get_tocken(mContext);
+        GPSTracker gpsTracker = new GPSTracker(mContext);
+
+        Str_lat = String.valueOf(gpsTracker.latitude);
+        Str_lng = String.valueOf(gpsTracker.longitude);
+        Country_name = gpsTracker.getCountryName(mContext);
+
+
+        System.out.println("Location.............................." + Str_lat + ",-" + Str_lng+Country_name);
 
         // String Str_token = "3C44B48850AF799094F663E2F1603E6B67926D3767EA827200D2CCF9DCAA0B827EA11E9DE0D45B090FAAD6EF9A2C9BB779DC472302230E9ADC24499280CC0CD9";
 
@@ -47,9 +57,10 @@ public class APIClient {
                         //.addHeader("Accept", "application/json, text/plain, */*")
                         .addHeader("channel", "Airos Group")
                         .addHeader("brand", "xWrist")
-                        .addHeader("country", "us")
+                        .addHeader("country", Country_name)
                         .addHeader("language", "us-en")
-                        .addHeader("location", "+37.33240905,-122.03051211")
+                        .addHeader("location", Str_lng + ",-" + Str_lng)
+                        //.addHeader("location", "43.595174" + "," + "-79.636138")
                         .addHeader("Content-Type", "application/json;charset=utf-8")
                         .method(original.method(), original.body())
                         .build();
