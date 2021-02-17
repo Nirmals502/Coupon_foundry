@@ -1,14 +1,31 @@
 package com.couponfoundry.rest;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Credentials;
 import okhttp3.Interceptor;
@@ -31,9 +48,57 @@ public class APIClient {
     public static String Str_lat = "";
     public static String Str_lng = "";
     public static String Country_name = "";
+    public static String City_name = "";
+    private static LocationManager locationManager;
+    private static String provider;
+    private static My_location mylistener;
+    private static Criteria criteria;
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @SuppressLint("NewApi")
 
     public static Retrofit getClient(Context mContext) {
         String Str_token = Get_tocken(mContext);
+
+
+        Geocoder geocoder;
+        String bestProvider;
+        List<Address> user = null;
+        double lat;
+        double lng;
+
+        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+
+        Criteria criteria = new Criteria();
+        bestProvider = lm.getBestProvider(criteria, false);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+        }
+        Location location = lm.getLastKnownLocation(bestProvider);
+
+        if (location == null){
+            Toast.makeText(mContext,"Location Not found",Toast.LENGTH_LONG).show();
+        }else{
+            geocoder = new Geocoder(mContext);
+            try {
+                user = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                lat=(double)user.get(0).getLatitude();
+                lng=(double)user.get(0).getLongitude();
+                System.out.println(" DDD lat: " +lat+",  longitude: "+lng);
+
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
         GPSTracker gpsTracker = new GPSTracker(mContext);
 
         Str_lat = String.valueOf(gpsTracker.latitude);
@@ -41,7 +106,8 @@ public class APIClient {
         Country_name = gpsTracker.getCountryName(mContext);
 
 
-        System.out.println("Location.............................." + Str_lat + ",-" + Str_lng+Country_name);
+        City_name = gpsTracker.getAddressLine(mContext);
+        System.out.println("Location.............................." + Str_lat + ",-" + Str_lng+Country_name+",,,,"+City_name);
 
         // String Str_token = "3C44B48850AF799094F663E2F1603E6B67926D3767EA827200D2CCF9DCAA0B827EA11E9DE0D45B090FAAD6EF9A2C9BB779DC472302230E9ADC24499280CC0CD9";
 
@@ -60,7 +126,7 @@ public class APIClient {
                         .addHeader("country", Country_name)
                         .addHeader("language", "us-en")
                         .addHeader("location", Str_lng + ",-" + Str_lng)
-                        //.addHeader("location", "43.595174" + "," + "-79.636138")
+                        //.addHeader("location", "34.0201613" + "," + "-118.691920")
                         .addHeader("Content-Type", "application/json;charset=utf-8")
                         .method(original.method(), original.body())
                         .build();

@@ -227,9 +227,10 @@ public class GPSTracker extends Service implements LocationListener {
 
         if (addresses != null && addresses.size() > 0) {
             Address address = addresses.get(0);
+            String city_name= address.getSubAdminArea();
             String addressLine = address.getAddressLine(0);
 
-            return addressLine;
+            return city_name;
         } else {
             return null;
         }

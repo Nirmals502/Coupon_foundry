@@ -60,6 +60,8 @@ import retrofit2.Response;
 public class Redeem_screen extends AppCompatActivity {
     @BindView(R.id.Txt_program)
     TextView Txt_tittle;
+    @BindView(R.id.txt_Tittle)
+    TextView Txt_tittle_main;
     @BindView(R.id.txt_retailer)
     TextView Txt_subtittle;
     @BindView(R.id.Txt_expiry_date)
@@ -192,8 +194,9 @@ public class Redeem_screen extends AppCompatActivity {
                         Img_instore.setImageResource(R.drawable.instore_off);
                         Img_phone_on.setImageResource(R.drawable.phone_off);
                         Img_print_.setImageResource(R.drawable.print_off);
-
+                        Txt_tittle_main.setText(response_.banner_header);
                         Txt_tittle.setText(response_.banner_header);
+                        Txt_tittle.setVisibility(View.GONE);
                         Txt_subtittle.setText(response_.banner_subtitle);
                         Txt_information.setText(response_.product_information);
                         Txt_expiry.setText("Expires on " + response_.expiry_date);
@@ -401,7 +404,9 @@ public class Redeem_screen extends AppCompatActivity {
 //        Img_instore.setImageResource(R.drawable.instore_off);
 //        Img_phone_on.setImageResource(R.drawable.phone_off);
 //        Img_print_.setImageResource(R.drawable.print_off);
+        Txt_tittle_main.setText(response_.banner_header);
 
+        Txt_tittle.setVisibility(View.GONE);
         Txt_tittle.setText(response_.banner_header);
         Txt_subtittle.setText(response_.banner_subtitle);
         Txt_information.setText(response_.product_information);
@@ -469,7 +474,9 @@ public class Redeem_screen extends AppCompatActivity {
 //        Img_instore.setImageResource(R.drawable.instore_on);
 //        Img_phone_on.setImageResource(R.drawable.phone_off);
 //        Img_print_.setImageResource(R.drawable.print_off);
+        Txt_tittle_main.setText(response_.banner_header);
 
+        Txt_tittle.setVisibility(View.VISIBLE);
         Txt_tittle.setText(response_.product_url);
         Txt_subtittle.setText(response_.promo_code);
         Txt_information.setText(response_.product_information);
@@ -499,7 +506,9 @@ public class Redeem_screen extends AppCompatActivity {
 //        Img_phone_on.setImageResource(R.drawable.phone_on);
 //        Img_print_.setImageResource(R.drawable.print_off);
 
+        Txt_tittle_main.setText(response_.banner_header);
 
+        Txt_tittle.setVisibility(View.VISIBLE);
         Txt_tittle.setText(response_.promo_code);
         Txt_subtittle.setText(response_.telephone);
         Txt_information.setText(response_.product_information);
@@ -533,7 +542,9 @@ public class Redeem_screen extends AppCompatActivity {
 //        Img_instore.setImageResource(R.drawable.instore_off);
 //        Img_phone_on.setImageResource(R.drawable.phone_off);
 //        Img_print_.setImageResource(R.drawable.print_on);
+        Txt_tittle_main.setText(response_.banner_header);
 
+        Txt_tittle.setVisibility(View.GONE);
         Txt_tittle.setText(response_.banner_header);
         Txt_subtittle.setText(response_.banner_subtitle);
         Txt_information.setText(response_.product_information);

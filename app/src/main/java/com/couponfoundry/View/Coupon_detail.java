@@ -44,7 +44,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Coupon_detail extends AppCompatActivity {
-    @BindView(R.id.Txt_program)
+    @BindView(R.id.txt_Tittle2)
     TextView Txt_tittle;
     @BindView(R.id.txt_retailer)
     TextView Txt_subtittle;

@@ -25,6 +25,7 @@ public class Api_client_with_member {
     public static String Str_lat = "";
     public static String Str_lng = "";
     public static String Country_name = "";
+    public static String City_name = "";
 
 
     public static Retrofit getClient(Context mContext) {
@@ -37,7 +38,8 @@ public class Api_client_with_member {
         Str_lat = String.valueOf(gpsTracker.latitude);
         Str_lng = String.valueOf(gpsTracker.longitude);
         Country_name = gpsTracker.getCountryName(mContext);
-        System.out.println("Location.............................." + Str_lat + ",-" + Str_lng+Country_name);
+        City_name = gpsTracker.getAddressLine(mContext);
+        System.out.println("Location.............................." + Str_lat + ",-" + Str_lng+Country_name+",,,,"+City_name);
 
         OkHttpClient.Builder oktHttpClient = new OkHttpClient.Builder();
         oktHttpClient.addInterceptor(new Interceptor() {
@@ -54,7 +56,7 @@ public class Api_client_with_member {
                         .addHeader("country", Country_name)
                         .addHeader("language", "us-en")
                         .addHeader("location", Str_lng + ",-" + Str_lng)
-                        //.addHeader("location", "43.595174" + "," + "-79.636138")
+                        //.addHeader("location", "34.0201613" + "," + "-118.691920")
                         .addHeader("Member", member)
                         .addHeader("Content-Type", "application/json;charset=utf-8")
                         .method(original.method(), original.body())

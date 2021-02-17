@@ -78,7 +78,7 @@ public class View_my_saved_coupon extends AppCompatActivity {
 //        Update_token update_token = new Update_token();
 //        update_token.Update_token(this);
         apiInterface = Api_client_with_member.getClient(this).create(APIInterface.class);
-        Post_offer_list offer_list = new Post_offer_list("list", "xwmcoupon");
+        Post_offer_list offer_list = new Post_offer_list("list", "xwmcoupon","true");
         Call<Offer_list> call1 = apiInterface.View_Save_offer(offer_list);
 //        avi.show();
 //        Rlv_avi.setVisibility(View.VISIBLE);

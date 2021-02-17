@@ -115,8 +115,7 @@
             android:id="@+id/Container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp">
+            android:layout_centerVertical="true">
 
             <TextView
                 android:id="@+id/txt_program2"
@@ -125,7 +124,7 @@
                 android:layout_below="@id/logo"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
@@ -142,6 +141,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:textColor="@color/new_blue_color" />
@@ -181,21 +181,21 @@
                 android:layout_below="@id/txt_expiry_date"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="20dp"
                 android:background="@drawable/glossy_"
                 android:fontFamily="@font/roboto"
                 android:text="REDEEM"
                 android:textColor="@android:color/white"
-                android:visibility="invisible" />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/logo"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
 
+                android:layout_below="@id/txt_Tittle"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp" />
 
             <TextView
@@ -209,8 +209,8 @@
                 android:layout_marginRight="10dp"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
-                android:textSize="17dp"
-                android:textColor="@color/new_blue_color" />
+                android:textColor="@color/new_blue_color"
+                android:textSize="17dp" />
 
             <RelativeLayout
                 android:id="@+id/Rlv_reset"
@@ -256,6 +256,21 @@
                 android:visibility="gone"
                 app:srcCompat="@drawable/ic_baseline_local_phone_24"
                 tools:ignore="VectorDrawableCompat" />
+
+            <TextView
+                android:id="@+id/txt_Tittle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerHorizontal="true"
+
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:textColor="@color/new_blue_color"
+                android:textSize="17dp" />
         </RelativeLayout>
     </ScrollView>
 
