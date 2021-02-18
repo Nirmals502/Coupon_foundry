@@ -33,13 +33,19 @@ public class Api_client_with_member {
         // String Str_token = "3C44B48850AF799094F663E2F1603E6B67926D3767EA827200D2CCF9DCAA0B827EA11E9DE0D45B090FAAD6EF9A2C9BB779DC472302230E9ADC24499280CC0CD9";
 
         String member = Get_member(mContext);
-        GPSTracker gpsTracker = new GPSTracker(mContext);
+//        GPSTracker gpsTracker = new GPSTracker(mContext);
+//
+//        Str_lat = String.valueOf(gpsTracker.latitude);
+//        Str_lng = String.valueOf(gpsTracker.longitude);
+//        Country_name = gpsTracker.getCountryName(mContext);
+//        City_name = gpsTracker.getAddressLine(mContext);
+//        System.out.println("Location.............................." + Str_lat + ",-" + Str_lng+Country_name+",,,,"+City_name);
+        SharedPreferences pref =mContext.getSharedPreferences("Coupon_foundry", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
 
-        Str_lat = String.valueOf(gpsTracker.latitude);
-        Str_lng = String.valueOf(gpsTracker.longitude);
-        Country_name = gpsTracker.getCountryName(mContext);
-        City_name = gpsTracker.getAddressLine(mContext);
-        System.out.println("Location.............................." + Str_lat + ",-" + Str_lng+Country_name+",,,,"+City_name);
+        Str_lat=pref.getString("Lat", "");
+        Str_lng=pref.getString("Lng", "");
+        Country_name=pref.getString("country_name", "");
 
         OkHttpClient.Builder oktHttpClient = new OkHttpClient.Builder();
         oktHttpClient.addInterceptor(new Interceptor() {
