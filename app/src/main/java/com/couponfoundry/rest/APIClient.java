@@ -76,7 +76,7 @@ public class APIClient {
 //
 //
 //        //City_name = gpsTracker.getAddressLine(mContext);
-//        System.out.println("Location.............................." + Str_lat + ",-" + Str_lng+Country_name+",,,,"+City_name);
+        System.out.println("Location  apiclient.............................." + Str_lat + ",-" + Str_lng + Country_name + ",,,," + City_name);
 
         // String Str_token = "3C44B48850AF799094F663E2F1603E6B67926D3767EA827200D2CCF9DCAA0B827EA11E9DE0D45B090FAAD6EF9A2C9BB779DC472302230E9ADC24499280CC0CD9";
 
@@ -94,8 +94,11 @@ public class APIClient {
                         .addHeader("brand", "xWrist")
                         .addHeader("country", Country_name)
                         .addHeader("language", "us-en")
+                        //.addHeader("location", Str_lat + "," + Str_lng)
                         .addHeader("location", Str_lat + "," + Str_lng)
-                        //.addHeader("location", "34.0201613" + "," + "-118.691920")
+                        //.addHeader("location", Str_lat + "," + Str_lng)
+
+                        //.addHeader("location", "3344.0201613" + "," + "-118.691920")
                         .addHeader("Content-Type", "application/json;charset=utf-8")
                         .method(original.method(), original.body())
                         .build();

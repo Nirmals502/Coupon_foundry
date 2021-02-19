@@ -1,18 +1,27 @@
 package com.couponfoundry.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,9 +41,33 @@ import com.couponfoundry.rest.APIInterface;
 import com.couponfoundry.rest.Activity_log;
 import com.couponfoundry.rest.Api_client_get_token;
 import com.couponfoundry.rest.Update_token;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +77,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Home_screen extends AppCompatActivity {
+    private static final String TAG = Welcome_screen.class.getSimpleName();
+
     @BindView(R.id.btn_coupons)
     Button Btn_coupons;
     @BindView(R.id.btn_wallet)
@@ -52,10 +87,33 @@ public class Home_screen extends AppCompatActivity {
     ImageView Img_logout;
     private PrefManager prefManager;
     APIInterface apiInterface;
-//    @BindView(R.id.Rlv_avi)
+    private String mLastUpdateTime;
+    //    @BindView(R.id.Rlv_avi)
 //    RelativeLayout Rlv_avi;
 //    @BindView(R.id.avi)
 //    AVLoadingIndicatorView avi;
+// location updates interval - 1min
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 60000;
+
+    // fastest updates interval - 5 sec
+    // location updates will be received if another app is requesting the locations
+    // than your app can handle
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
+
+    private static final int REQUEST_CHECK_SETTINGS = 100;
+
+
+    // bunch of location related apis
+    private FusedLocationProviderClient mFusedLocationClient;
+    private SettingsClient mSettingsClient;
+    private LocationRequest mLocationRequest;
+    private LocationSettingsRequest mLocationSettingsRequest;
+    private LocationCallback mLocationCallback;
+    private Location mCurrentLocation;
+
+    // boolean flag to toggle the ui
+    private Boolean mRequestingLocationUpdates;
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -68,6 +126,7 @@ public class Home_screen extends AppCompatActivity {
         apiInterface = APIClient.getClient(Home_screen.this).create(APIInterface.class);
 
         new AsyncTaskRunner().execute();
+        init();
     }
 
     @OnClick(R.id.btn_coupons)
@@ -115,7 +174,7 @@ public class Home_screen extends AppCompatActivity {
                                     Activity_log activity_log = new Activity_log();
                                     activity_log.Activity_log(Home_screen.this, "new", "logout");
 
-                                    SharedPreferences preferences =getSharedPreferences("COUPON FOUNDRY",Context.MODE_PRIVATE);
+                                    SharedPreferences preferences = getSharedPreferences("COUPON FOUNDRY", Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = preferences.edit();
                                     editor.clear();
                                     editor.apply();
@@ -200,5 +259,152 @@ public class Home_screen extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
 
+    }
+
+    private void init() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mSettingsClient = LocationServices.getSettingsClient(this);
+
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                // location is received
+                mCurrentLocation = locationResult.getLastLocation();
+                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+
+                updateLocationUI();
+            }
+        };
+
+        mRequestingLocationUpdates = false;
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        mLocationSettingsRequest = builder.build();
+
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        mRequestingLocationUpdates = true;
+                        startLocationUpdates();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            // open device settings when the permission is
+                            // denied permanently
+                            // openSettings();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
+    private void updateLocationUI() {
+        if (mCurrentLocation != null) {
+//            txtLocationResult.setText(
+//                    "Lat: " + mCurrentLocation.getLatitude() + ", " +
+//                            "Lng: " + mCurrentLocation.getLongitude()
+
+            String Strlat = String.valueOf(mCurrentLocation.getLatitude());
+            String Strlng = String.valueOf(mCurrentLocation.getLongitude());
+
+            String Country_name = getAddress(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+            System.out.println("Loaction.........................." + mCurrentLocation.getLatitude() + " " + mCurrentLocation.getLongitude() + Country_name);
+            //mCurrentLocation.
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("Lat", Strlat);
+            editor.putString("Lng", Strlng);
+            editor.putString("country_name", Country_name);
+            editor.apply();
+
+        }
+    }
+
+    private void startLocationUpdates() {
+        mSettingsClient
+                .checkLocationSettings(mLocationSettingsRequest)
+                .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                        Log.i(TAG, "All location settings are satisfied.");
+
+                        //    Toast.makeText(getApplicationContext(), "Started location updates!", Toast.LENGTH_SHORT).show();
+
+                        //noinspection MissingPermission
+                        mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                                mLocationCallback, Looper.myLooper());
+                        if (mCurrentLocation != null) {
+//
+                            System.out.println("Loaction.........................." + mCurrentLocation.getLatitude() + " " + mCurrentLocation.getLongitude());
+                        }
+
+                        //Toast.makeText(Welcome_screen.this, (int) mCurrentLocation.getLatitude(),Toast.LENGTH_LONG).show();
+                        // giving a blink animation on TextView
+
+
+                        // updateLocationUI();
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        int statusCode = ((ApiException) e).getStatusCode();
+                        switch (statusCode) {
+                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                                Log.i(TAG, "Location settings are not satisfied. Attempting to upgrade " +
+                                        "location settings ");
+                                try {
+                                    // Show the dialog by calling startResolutionForResult(), and check the
+                                    // result in onActivityResult().
+                                    ResolvableApiException rae = (ResolvableApiException) e;
+                                    rae.startResolutionForResult(Home_screen.this, REQUEST_CHECK_SETTINGS);
+                                } catch (IntentSender.SendIntentException sie) {
+                                    Log.i(TAG, "PendingIntent unable to execute request.");
+                                }
+                                break;
+                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                                String errorMessage = "Location settings are inadequate, and cannot be " +
+                                        "fixed here. Fix in Settings.";
+                                Log.e(TAG, errorMessage);
+
+                                Toast.makeText(Home_screen.this, errorMessage, Toast.LENGTH_LONG).show();
+                        }
+
+                        //updateLocationUI();
+                    }
+                });
+
+    }
+
+    private String getAddress(double latitude, double longitude) {
+        StringBuilder result = new StringBuilder();
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses.size() > 0) {
+                Address address = addresses.get(0);
+                // result.append(address.getLocality()).append("\n");
+                result.append(address.getCountryName());
+            }
+        } catch (IOException e) {
+            Log.e("tag", e.getMessage());
+        }
+        return result.toString();
     }
 }

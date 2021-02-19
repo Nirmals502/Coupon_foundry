@@ -39,13 +39,14 @@ public class Api_client_with_member {
 //        Str_lng = String.valueOf(gpsTracker.longitude);
 //        Country_name = gpsTracker.getCountryName(mContext);
 //        City_name = gpsTracker.getAddressLine(mContext);
-//        System.out.println("Location.............................." + Str_lat + ",-" + Str_lng+Country_name+",,,,"+City_name);
-        SharedPreferences pref =mContext.getSharedPreferences("Coupon_foundry", 0); // 0 - for private mode
+        SharedPreferences pref = mContext.getSharedPreferences("Coupon_foundry", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
 
-        Str_lat=pref.getString("Lat", "");
-        Str_lng=pref.getString("Lng", "");
-        Country_name=pref.getString("country_name", "");
+        Str_lat = pref.getString("Lat", "");
+        Str_lng = pref.getString("Lng", "");
+        Country_name = pref.getString("country_name", "");
+        //System.out.println("Location.............................." + Str_lat + ",-" + Str_lng + Country_name + ",,,,");
+        System.out.println("");
 
         OkHttpClient.Builder oktHttpClient = new OkHttpClient.Builder();
         oktHttpClient.addInterceptor(new Interceptor() {
@@ -55,14 +56,17 @@ public class Api_client_with_member {
                 Request request = original.newBuilder()
                         .addHeader("Authorization",
                                 Str_token)
-                        //.addHeader("Accept", "application/json, text/plain, */*")
+                        .addHeader("Accept", "application/json, text/plain, */*")
 
                         .addHeader("channel", "Airos Group")
                         .addHeader("brand", "xWrist")
+//                        .addHeader("channel", "QA")
+//                        .addHeader("brand", "QATest")
                         .addHeader("country", Country_name)
                         .addHeader("language", "us-en")
                         .addHeader("location", Str_lat + "," + Str_lng)
                         //.addHeader("location", "34.0201613" + "," + "-118.691920")
+                        //.addHeader("Member", "100000007")
                         .addHeader("Member", member)
                         .addHeader("Content-Type", "application/json;charset=utf-8")
                         .method(original.method(), original.body())
@@ -79,6 +83,7 @@ public class Api_client_with_member {
                 return chain.proceed(request);
             }
         });
+
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
