@@ -94,7 +94,7 @@ public class APIClient {
                         .addHeader("brand", "xWrist")
                         .addHeader("country", Country_name)
                         .addHeader("language", "us-en")
-                        .addHeader("location", Str_lng + ",-" + Str_lng)
+                        .addHeader("location", Str_lat + "," + Str_lng)
                         //.addHeader("location", "34.0201613" + "," + "-118.691920")
                         .addHeader("Content-Type", "application/json;charset=utf-8")
                         .method(original.method(), original.body())
