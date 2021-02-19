@@ -89,6 +89,7 @@ public class View_coupon extends AppCompatActivity {
         apiInterface = Api_client_with_member.getClient(this).create(APIInterface.class);
 
         Post_offer_list offer_list = new Post_offer_list("list", "xwmcoupon","true");
+        //Post_offer_list offer_list = new Post_offer_list("list", "TestAPI123","true");
         Call<Offer_list> call1 = apiInterface.Offer_list(offer_list);
 //        avi.show();
 //        Rlv_avi.setVisibility(View.VISIBLE);

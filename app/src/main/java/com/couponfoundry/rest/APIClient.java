@@ -62,12 +62,12 @@ public class APIClient {
     public static Retrofit getClient(Context mContext) {
         String Str_token = Get_tocken(mContext);
 
-        SharedPreferences pref =mContext.getSharedPreferences("Coupon_foundry", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
+        SharedPreferences pref = mContext.getSharedPreferences("Coupon_foundry", 0); // 0 - for private mode
+        //SharedPreferences.Editor editor = pref.edit();
 
-        Str_lat=pref.getString("Lat", "");
-        Str_lng=pref.getString("Lng", "");
-        Country_name=pref.getString("country_name", "");
+        Str_lat = pref.getString("Lat", "");
+        Str_lng = pref.getString("Lng", "");
+        Country_name = pref.getString("country_name", "");
         //GPSTracker gpsTracker = new GPSTracker(mContext);
 
 //        Str_lat = String.valueOf(gpsTracker.latitude);
@@ -94,7 +94,7 @@ public class APIClient {
                         .addHeader("brand", "xWrist")
                         .addHeader("country", Country_name)
                         .addHeader("language", "us-en")
-                        .addHeader("location", Str_lng + ",-" + Str_lng)
+                        .addHeader("location", Str_lat + "," + Str_lng)
                         //.addHeader("location", "34.0201613" + "," + "-118.691920")
                         .addHeader("Content-Type", "application/json;charset=utf-8")
                         .method(original.method(), original.body())
