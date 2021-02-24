@@ -42,9 +42,22 @@ public class Api_client_with_member {
         SharedPreferences pref = mContext.getSharedPreferences("Coupon_foundry", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
 
-        Str_lat = pref.getString("Lat", "");
-        Str_lng = pref.getString("Lng", "");
-        Country_name = pref.getString("country_name", "");
+//        Str_lat = pref.getString("Lat", "");
+//        Str_lng = pref.getString("Lng", "");
+        Str_lat = pref.getString("Latnew", "novalue");
+        // Str_lng = pref.getString("Lngnew", "");
+        if (Str_lat.contentEquals("novalue")) {
+            Str_lat = pref.getString("Lat", "");
+            Str_lng = pref.getString("Lng", "");
+            Country_name = pref.getString("country_name", "");
+        } else {
+            Str_lat = pref.getString("Latnew", "");
+            Str_lng = pref.getString("Lngnew", "");
+            Country_name = pref.getString("country_name", "");
+        }
+
+
+       // Country_name = pref.getString("country_name", "");
         //System.out.println("Location.............................." + Str_lat + ",-" + Str_lng + Country_name + ",,,,");
         System.out.println("");
 
@@ -65,7 +78,7 @@ public class Api_client_with_member {
                         .addHeader("country", Country_name)
                         .addHeader("language", "us-en")
                         .addHeader("location", Str_lat + "," + Str_lng)
-                        //.addHeader("location", "34.0201613" + "," + "-118.691920")
+                        //.addHeader("location", "43.231142" + "," + "-79.702862")
                         //.addHeader("Member", "100000007")
                         .addHeader("Member", member)
                         .addHeader("Content-Type", "application/json;charset=utf-8")

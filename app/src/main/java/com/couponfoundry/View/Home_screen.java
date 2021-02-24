@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -127,6 +129,7 @@ public class Home_screen extends AppCompatActivity {
 
         new AsyncTaskRunner().execute();
         init();
+
     }
 
     @OnClick(R.id.btn_coupons)
@@ -148,70 +151,77 @@ public class Home_screen extends AppCompatActivity {
     @OnClick(R.id.imageView4)
     void Logout() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to Logout ?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //System.exit(0);
-                        String androidId = Settings.Secure.getString(getContentResolver(),
-                                Settings.Secure.ANDROID_ID);
-                        Post_logout Logout = new Post_logout("logout", androidId);
-                        Call<Response_view_offer> call1 = apiInterface.Logout(Logout);
-//                        avi.show();
-//                        Rlv_avi.setVisibility(View.VISIBLE);
-//                        avi.dispatchWindowFocusChanged(true);
-
-                        call1.enqueue(new Callback<Response_view_offer>() {
-                            @Override
-                            public void onResponse(Call<Response_view_offer> call, Response<Response_view_offer> response) {
-
-                                try {
-//                                    Response_view_offer response_ = response.body();
-//                                    avi.hide();
-//                                    Rlv_avi.setVisibility(View.GONE);
-
-                                    Activity_log activity_log = new Activity_log();
-                                    activity_log.Activity_log(Home_screen.this, "new", "logout");
-
-                                    SharedPreferences preferences = getSharedPreferences("COUPON FOUNDRY", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = preferences.edit();
-                                    editor.clear();
-                                    editor.apply();
-                                    Intent i = new Intent(Home_screen.this,
-                                            Welcome_screen.class);
-                                    startActivity(i);
-                                    finish();
-                                } catch (java.lang.NullPointerException e) {
-                                    e.printStackTrace();
-
-//                                    avi.hide();
-//                                    Rlv_avi.setVisibility(View.GONE);
-
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<Response_view_offer> call, Throwable t) {
-                                call.cancel();
-                                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
-//                                avi.hide();
-//                                Rlv_avi.setVisibility(View.GONE);
-
-                            }
-                        });
-
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("Are you sure you want to Logout ?")
+//                .setCancelable(false)
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        //System.exit(0);
+//                        String androidId = Settings.Secure.getString(getContentResolver(),
+//                                Settings.Secure.ANDROID_ID);
+//                        Post_logout Logout = new Post_logout("logout", androidId);
+//                        Call<Response_view_offer> call1 = apiInterface.Logout(Logout);
+////                        avi.show();
+////                        Rlv_avi.setVisibility(View.VISIBLE);
+////                        avi.dispatchWindowFocusChanged(true);
+//
+//                        call1.enqueue(new Callback<Response_view_offer>() {
+//                            @Override
+//                            public void onResponse(Call<Response_view_offer> call, Response<Response_view_offer> response) {
+//
+//                                try {
+////                                    Response_view_offer response_ = response.body();
+////                                    avi.hide();
+////                                    Rlv_avi.setVisibility(View.GONE);
+//
+//                                    Activity_log activity_log = new Activity_log();
+//                                    activity_log.Activity_log(Home_screen.this, "new", "logout");
+//
+//                                    SharedPreferences preferences = getSharedPreferences("COUPON FOUNDRY", Context.MODE_PRIVATE);
+//                                    SharedPreferences.Editor editor = preferences.edit();
+//                                    editor.clear();
+//                                    editor.apply();
+//                                    Intent i = new Intent(Home_screen.this,
+//                                            Welcome_screen.class);
+//                                    startActivity(i);
+//                                    finish();
+//                                } catch (java.lang.NullPointerException e) {
+//                                    e.printStackTrace();
+//
+////                                    avi.hide();
+////                                    Rlv_avi.setVisibility(View.GONE);
+//
+//                                }
+//
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<Response_view_offer> call, Throwable t) {
+//                                call.cancel();
+//                                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+////                                avi.hide();
+////                                Rlv_avi.setVisibility(View.GONE);
+//
+//                            }
+//                        });
+//
+//                    }
+//                })
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        //dialog.cancel();
+//                        Intent i = new Intent(Home_screen.this,
+//                                MapsActivity.class);
+//                        startActivity(i);
+//                        finish();
+//                    }
+//                });
+//        AlertDialog alert = builder.create();
+//        alert.show();
+        Intent i = new Intent(Home_screen.this,
+                Setting_screen.class);
+        startActivity(i);
+        finish();
 
     }
 
@@ -407,4 +417,36 @@ public class Home_screen extends AppCompatActivity {
         }
         return result.toString();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isApplicationBroughtToBackground()) {
+            //Toast.makeText(Home_screen.this, "background", Toast.LENGTH_LONG).show();
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("Latnew", "");
+            editor.putString("Lngnew", "");
+
+
+            editor.apply();
+        } else {
+            //Toast.makeText(Home_screen.this, "Foreground", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean isApplicationBroughtToBackground() {
+        ActivityManager am = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(this.getPackageName())) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+
 }

@@ -20,7 +20,7 @@
     <string name="back">BACK</string>
 
 
-    <string-array name="CountryCodes" >
+    <string-array name="CountryCodes">
         <item>93,AF</item>
         <item>355,AL</item>
         <item>213,DZ</item>
@@ -228,5 +228,6 @@
         <item>260,ZM</item>
         <item>263,ZW</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

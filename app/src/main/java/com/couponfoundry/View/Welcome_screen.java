@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -324,9 +326,6 @@ public class Welcome_screen extends AppCompatActivity {
     }
 
 
-
-
-
     /**
      * Starting location updates
      * Check whether location settings are satisfied and then
@@ -425,4 +424,33 @@ public class Welcome_screen extends AppCompatActivity {
         return result.toString();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isApplicationBroughtToBackground()) {
+
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("Latnew", "");
+            editor.putString("Lngnew", "");
+
+
+            editor.apply();
+        } else {
+
+        }
+    }
+
+    private boolean isApplicationBroughtToBackground() {
+        ActivityManager am = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(this.getPackageName())) {
+                return true;
+            }
+
+        }
+        return false;
+    }
 }

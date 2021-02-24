@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,6 +52,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -667,6 +670,35 @@ public class Register_screen extends AppCompatActivity {
             }
         }
         return CountryZipCode;
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isApplicationBroughtToBackground()) {
+
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("Latnew", "");
+            editor.putString("Lngnew", "");
+
+
+            editor.apply();
+        } else {
+
+        }
+    }
+
+    private boolean isApplicationBroughtToBackground() {
+        ActivityManager am = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(this.getPackageName())) {
+                return true;
+            }
+
+        }
+        return false;
     }
 }
 
