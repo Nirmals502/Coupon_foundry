@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String Str_lat = "";
     String Str_lng = "";
     ImageView Img_back;
+    Button Btn_search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Edttxt_lat = (EditText) findViewById(R.id.editTextlat);
         Edttxtlon = (EditText) findViewById(R.id.edttxtlon);
         Img_back = (ImageView) findViewById(R.id.imageView5);
+        Btn_search = (Button) findViewById(R.id.button_search);
         SharedPreferences pref = MapsActivity.this.getSharedPreferences("Coupon_foundry", 0); // 0 - for private mode
         //SharedPreferences.Editor editor = pref.edit();
         Str_lat = pref.getString("Latnew", "novalue");
@@ -86,13 +89,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void afterTextChanged(Editable s) {
-                SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("Latnew", Edttxt_lat.getText().toString());
-//                editor.putString("Lngnew", String.valueOf(latLng.longitude));
-//                editor.putString("country_name", address.getCountryName());
-
-                editor.apply();
+//                SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+//                SharedPreferences.Editor editor = prefs.edit();
+//                editor.putString("Latnew", Edttxt_lat.getText().toString());
+////                editor.putString("Lngnew", String.valueOf(latLng.longitude));
+////                editor.putString("country_name", address.getCountryName());
+//
+//                editor.apply();
             }
         });
         Edttxtlon.addTextChangedListener(new TextWatcher() {
@@ -108,13 +111,66 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void afterTextChanged(Editable s) {
-                SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("Lngnew", Edttxtlon.getText().toString());
-//                editor.putString("Lngnew", String.valueOf(latLng.longitude));
-//                editor.putString("country_name", address.getCountryName());
+//                SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+//                SharedPreferences.Editor editor = prefs.edit();
+//                editor.putString("Lngnew", Edttxtlon.getText().toString());
+////                editor.putString("Lngnew", String.valueOf(latLng.longitude));
+////                editor.putString("country_name", address.getCountryName());
+//
+//                editor.apply();
+            }
+        });
+        Btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Edttxt_lat.getText().toString().contentEquals("") || !Edttxtlon.getText().toString().contentEquals("")) {
+//                    SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+//                    SharedPreferences.Editor editor = prefs.edit();
+//                    editor.putString("Latnew", Edttxt_lat.getText().toString());
+//                    editor.putString("Lngnew", Edttxtlon.getText().toString());
+////                editor.putString("country_name", address.getCountryName());
+//
+//                    editor.apply();
+//                    finish();
+//                    startActivity(getIntent());
+                    try {
+                        try {
+                            double dlat = Double.parseDouble(Edttxt_lat.getText().toString());
+                            double dlng = Double.parseDouble(Edttxtlon.getText().toString());
+                            LatLng latlngg = new LatLng(dlat, dlng);
+                            marker.setPosition(latlngg);
+                            Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                            try {
+                                try {
+                                    android.location.Address address = geocoder.getFromLocation(latlngg.latitude, latlngg.longitude, 1).get(0);
+                                    marker.setTitle(address.getAdminArea());
 
-                editor.apply();
+                                    SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("Latnew", Edttxt_lat.getText().toString());
+                                    editor.putString("Lngnew", Edttxtlon.getText().toString());
+                                    editor.putString("country_name", address.getCountryName());
+
+                                    editor.apply();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                mMap.animateCamera(CameraUpdateFactory.newLatLng(latlngg));
+                            } catch (IndexOutOfBoundsException e) {
+                                e.printStackTrace();
+                            }
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            Toast.makeText(MapsActivity.this, "Invalid LatLng", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (java.lang.NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(MapsActivity.this, "Lattitude and Longitude is invalid", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
         mapFragment.getMapAsync(this);
@@ -143,9 +199,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
             try {
-                android.location.Address address = geocoder.getFromLocation(dlat, dlng, 1).get(0);
-                marker = mMap.addMarker(new MarkerOptions().position(sydney).draggable(false).title(address.getAdminArea()));
-            } catch (IOException e) {
+                try {
+                    android.location.Address address = geocoder.getFromLocation(dlat, dlng, 1).get(0);
+                    marker = mMap.addMarker(new MarkerOptions().position(sydney).draggable(false).title(address.getAdminArea()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (java.lang.IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
             // mMap.addMarker(new MarkerOptions().position(sydney).draggable(true).title(""));
@@ -155,14 +215,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.getUiSettings().setZoomControlsEnabled(true);
         } catch (java.lang.IllegalArgumentException e) {
             e.printStackTrace();
-          //  Toast.makeText(MapsActivity.this,"Invalid Location",Toast.LENGTH_LONG).show();
+            //  Toast.makeText(MapsActivity.this,"Invalid Location",Toast.LENGTH_LONG).show();
             SharedPreferences pref = MapsActivity.this.getSharedPreferences("Coupon_foundry", 0); // 0 - for private mode
             Str_lat = pref.getString("Lat", "");
             Str_lng = pref.getString("Lng", "");
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("Latnew", Str_lat);
             editor.putString("Lngnew", Str_lng);
-           // editor.putString("country_name", address.getCountryName());
+            // editor.putString("country_name", address.getCountryName());
 
             editor.apply();
             finish();
@@ -227,6 +287,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
+
     @Override
     protected void onPause() {
         super.onPause();

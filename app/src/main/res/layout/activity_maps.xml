@@ -41,9 +41,10 @@
             android:layout_marginEnd="18dp"
             android:layout_marginRight="18dp"
             android:layout_marginBottom="5dp"
+            android:inputType="number|numberDecimal|numberSigned"
             android:background="@drawable/roundedittext"
             android:ems="10"
-            android:inputType="textPersonName"
+
             android:paddingLeft="8dp"
             android:textColor="@color/white" />
     </RelativeLayout>
@@ -86,7 +87,7 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/roundedittext"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="number|numberDecimal|numberSigned"
             android:paddingLeft="4dp"
             android:textColor="@color/white" />
     </RelativeLayout>
@@ -132,4 +133,19 @@
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_search"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/glossy_"
+        android:text="Search"
+        android:textColor="@color/white"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="1.0"
+        map:layout_constraintStart_toEndOf="@+id/mapView"
+        map:layout_constraintTop_toBottomOf="@+id/button5" />
 </androidx.constraintlayout.widget.ConstraintLayout>
