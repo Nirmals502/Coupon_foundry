@@ -21,7 +21,7 @@ android {
         }
 
         // Inject the Maps API key into the manifest
-        manifestPlaceholders = [ mapsApiKey : properties.getProperty("MAPS_API_KEY", "AIzaSyBn00RoHj-No_btViD31YoaXq597tR0288") ]
+        manifestPlaceholders = [ mapsApiKey : properties.getProperty("MAPS_API_KEY", "AIzaSyAkaDveeFra8TZXVTcwgOA4YCOViUsNSJ4") ]
 
     }
     compileOptions {

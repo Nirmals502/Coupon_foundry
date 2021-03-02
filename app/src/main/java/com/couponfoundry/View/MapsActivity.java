@@ -143,7 +143,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             try {
                                 try {
                                     android.location.Address address = geocoder.getFromLocation(latlngg.latitude, latlngg.longitude, 1).get(0);
-                                    marker.setTitle(address.getAdminArea());
+                                    String addressstr = address.getAddressLine(0); //0 to obtain first possible address
+                                    String city = address.getLocality();
+                                    String state = address.getAdminArea();
+                                    String country = address.getCountryName();
+                                    String postalCode = address.getPostalCode();
+                                    String title = addressstr +"-"+city+"-"+state+"-"+country+"-"+postalCode;
+                                    marker.setTitle(title);
+                                    marker.isInfoWindowShown();
 
                                     SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
                                     SharedPreferences.Editor editor = prefs.edit();
@@ -202,6 +209,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     android.location.Address address = geocoder.getFromLocation(dlat, dlng, 1).get(0);
                     marker = mMap.addMarker(new MarkerOptions().position(sydney).draggable(false).title(address.getAdminArea()));
+                    String addressstr = address.getAddressLine(0); //0 to obtain first possible address
+                    String city = address.getLocality();
+                    String state = address.getAdminArea();
+                    String country = address.getCountryName();
+                    String postalCode = address.getPostalCode();
+                    String title = addressstr +"-"+city+"-"+state+"-"+country+"-"+postalCode;
+                    marker.setTitle(title);
+                    marker.isInfoWindowShown();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -264,18 +279,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     marker.setPosition(latLng);
                     Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
                     try {
-                        android.location.Address address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).get(0);
-                        marker.setTitle(address.getAdminArea());
-                        Edttxt_lat.setText(String.valueOf(latLng.latitude));
-                        Edttxtlon.setText(String.valueOf(latLng.longitude));
-                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("Latnew", String.valueOf(latLng.latitude));
-                        editor.putString("Lngnew", String.valueOf(latLng.longitude));
-                        editor.putString("country_name", address.getCountryName());
+                        try {
+                            android.location.Address address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).get(0);
+                            String addressstr = address.getAddressLine(0); //0 to obtain first possible address
+                            String city = address.getLocality();
+                            String state = address.getAdminArea();
+                            String country = address.getCountryName();
+                            String postalCode = address.getPostalCode();
+                            String title = addressstr +"-"+city+"-"+state+"-"+country+"-"+postalCode;
+                            marker.setTitle(title);
+                            marker.isInfoWindowShown();
 
-                        editor.apply();
-                    } catch (IOException e) {
+                            // marker.setTitle(address.getAdminArea());
+                            Edttxt_lat.setText(String.valueOf(latLng.latitude));
+                            Edttxtlon.setText(String.valueOf(latLng.longitude));
+                            SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("Latnew", String.valueOf(latLng.latitude));
+                            editor.putString("Lngnew", String.valueOf(latLng.longitude));
+                            editor.putString("country_name", address.getCountryName());
+
+                            editor.apply();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (java.lang.IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
 
