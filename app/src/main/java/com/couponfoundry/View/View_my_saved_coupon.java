@@ -90,6 +90,7 @@ public class View_my_saved_coupon extends AppCompatActivity {
         call1.enqueue(new Callback<Offer_list>() {
             @Override
             public void onResponse(Call<Offer_list> call, Response<Offer_list> response) {
+                if (response.code() != 400) {
                 if (response.isSuccessful()) {
                     try {
                         Offer_list response_ = response.body();
@@ -196,6 +197,13 @@ public class View_my_saved_coupon extends AppCompatActivity {
 
                         }
                     });
+                }
+                } else {
+                    Toast.makeText(View_my_saved_coupon.this, "Member is not linked with brand", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(View_my_saved_coupon.this,
+                            Home_screen.class);
+                    startActivity(i);
+                    finish();
                 }
 
             }

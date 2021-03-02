@@ -91,7 +91,7 @@ public class View_coupon extends AppCompatActivity {
 //        update_token.Update_token(this);
         apiInterface = Api_client_with_member.getClient(this).create(APIInterface.class);
 
-        Post_offer_list offer_list = new Post_offer_list("list", "xwmcoupon","true");
+        Post_offer_list offer_list = new Post_offer_list("list", "xwmcoupon", "true");
         //Post_offer_list offer_list = new Post_offer_list("list", "TestAPI123","true");
         Call<Offer_list> call1 = apiInterface.Offer_list(offer_list);
 //        avi.show();
@@ -104,31 +104,32 @@ public class View_coupon extends AppCompatActivity {
 
 
                 Offer_list response_ = response.body();
-                if (response.isSuccessful()) {
-                    try {
-                        Log.e("Success", new Gson().toJson(response.body()));
-                        offerlist = response_.offers;
-                        Coupon_list adapter = new Coupon_list(View_coupon.this, offerlist, "SAVE");
-                        Lv_list.setAdapter(adapter);
-                        int_size = offerlist.size();
-                        String Str_size = String.valueOf(int_size);
+                if (response.code() != 400) {
+                    if (response.isSuccessful()) {
+                        try {
+                            Log.e("Success", new Gson().toJson(response.body()));
+                            offerlist = response_.offers;
+                            Coupon_list adapter = new Coupon_list(View_coupon.this, offerlist, "SAVE");
+                            Lv_list.setAdapter(adapter);
+                            int_size = offerlist.size();
+                            String Str_size = String.valueOf(int_size);
 
 //                            String title = remoteMessage.getNotification().getTitle();
 //                            String body = remoteMessage.getNotification().getBody();
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                            NotificationManager mNotificationManager =
-                                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                            int importance = NotificationManager.IMPORTANCE_HIGH;
-                            NotificationChannel mChannel = new NotificationChannel(Constants.CHANNEL_ID, Constants.CHANNEL_NAME, importance);
-                            mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
-                            mChannel.enableLights(true);
-                            mChannel.setLightColor(Color.RED);
-                            mChannel.enableVibration(true);
-                            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-                            mNotificationManager.createNotificationChannel(mChannel);
-                        }
-                        MyNotificationManager.getInstance(View_coupon.this).displayNotification("New Offers are Available", "You’re Eligible To Save " + Str_size + " New Offer");
-                        //then here we can use the title and body to build a notification
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                NotificationManager mNotificationManager =
+                                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                int importance = NotificationManager.IMPORTANCE_HIGH;
+                                NotificationChannel mChannel = new NotificationChannel(Constants.CHANNEL_ID, Constants.CHANNEL_NAME, importance);
+                                mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
+                                mChannel.enableLights(true);
+                                mChannel.setLightColor(Color.RED);
+                                mChannel.enableVibration(true);
+                                mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                                mNotificationManager.createNotificationChannel(mChannel);
+                            }
+                            MyNotificationManager.getInstance(View_coupon.this).displayNotification("New Offers are Available", "You’re Eligible To Save " + Str_size + " New Offer");
+                            //then here we can use the title and body to build a notification
 
 //                        Post_notification Push_notification = new Post_notification("send", "New Offers are Available", "You’re Eligible To Save " + Str_size + " New Offer");
 //                        Call<Response_view_offer> call_push = apiInterface.Notification(Push_notification);
@@ -164,55 +165,62 @@ public class View_coupon extends AppCompatActivity {
 //
 //                            }
 //                        });
-                        Activity_log activity_log = new Activity_log();
-                        activity_log.Activity_log(View_coupon.this, "new", "search");
-                    } catch (java.lang.NullPointerException e) {
-                        e.printStackTrace();
+                            Activity_log activity_log = new Activity_log();
+                            activity_log.Activity_log(View_coupon.this, "new", "search");
+                        } catch (java.lang.NullPointerException e) {
+                            e.printStackTrace();
 
 //                    avi.hide();
 //                    Rlv_avi.setVisibility(View.GONE);
 
-                    }
-                } else {
-                    String Sha512 = get_SHA_512_SecurePassword("secret:0nRj$Zb$+UL=+apikey:b$4wk09jAQs*");
-                    String Str = Sha512;
-                    Post_to_get_token user = new Post_to_get_token("authenticate", "z/9n}0YoMDl5", Str);
-                    Call<response_token> call1 = apiInterface.Get_token(user);
-                    call1.enqueue(new Callback<response_token>() {
-                        @Override
-                        public void onResponse(Call<response_token> call, Response<response_token> response) {
-                            try {
-                                response_token user1 = response.body();
-                                String Token = user1.token;
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(View_coupon.this);
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("token", Token);
-                                editor.apply();
-                                System.out.println("token......" + Token);
 
-                                finish();
-                                overridePendingTransition(0, 0);
-                                startActivity(getIntent());
-                                overridePendingTransition(0, 0);
+                        }
+                    } else {
+                        String Sha512 = get_SHA_512_SecurePassword("secret:0nRj$Zb$+UL=+apikey:b$4wk09jAQs*");
+                        String Str = Sha512;
+                        Post_to_get_token user = new Post_to_get_token("authenticate", "z/9n}0YoMDl5", Str);
+                        Call<response_token> call1 = apiInterface.Get_token(user);
+                        call1.enqueue(new Callback<response_token>() {
+                            @Override
+                            public void onResponse(Call<response_token> call, Response<response_token> response) {
+                                try {
+                                    response_token user1 = response.body();
+                                    String Token = user1.token;
+                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(View_coupon.this);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("token", Token);
+                                    editor.apply();
+                                    System.out.println("token......" + Token);
 
-                            } catch (java.lang.NullPointerException e) {
-                                e.printStackTrace();
+                                    finish();
+                                    overridePendingTransition(0, 0);
+                                    startActivity(getIntent());
+                                    overridePendingTransition(0, 0);
+
+                                } catch (java.lang.NullPointerException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
 
-                        }
-
-                        @Override
-                        public void onFailure(Call<response_token> call, Throwable t) {
-                            call.cancel();
+                            @Override
+                            public void onFailure(Call<response_token> call, Throwable t) {
+                                call.cancel();
 
 
-                        }
-                    });
-                }
+                            }
+                        });
+                    }
 //                    avi.hide();
 //                    Rlv_avi.setVisibility(View.GONE);
 
-
+                } else {
+                    Toast.makeText(View_coupon.this, "Member is not linked with brand", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(View_coupon.this,
+                            Home_screen.class);
+                    startActivity(i);
+                    finish();
+                }
             }
 
             @Override
@@ -380,6 +388,7 @@ public class View_coupon extends AppCompatActivity {
         }
 
     }
+
     @Override
     protected void onPause() {
         super.onPause();

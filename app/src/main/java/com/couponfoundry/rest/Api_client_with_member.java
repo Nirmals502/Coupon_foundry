@@ -18,7 +18,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Api_client_with_member {
+public class Api_client_with_member implements Interceptor {
     public static Retrofit retrofit = null;
     public static String Client = "z/9n}0YoMDl5";
     public static String Client_Secret = "0nRj$Zb$+UL=";
@@ -57,11 +57,12 @@ public class Api_client_with_member {
         }
 
 
-       // Country_name = pref.getString("country_name", "");
+        // Country_name = pref.getString("country_name", "");
         //System.out.println("Location.............................." + Str_lat + ",-" + Str_lng + Country_name + ",,,,");
         System.out.println("");
 
         OkHttpClient.Builder oktHttpClient = new OkHttpClient.Builder();
+
         oktHttpClient.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
@@ -84,16 +85,22 @@ public class Api_client_with_member {
                         .addHeader("Content-Type", "application/json;charset=utf-8")
                         .method(original.method(), original.body())
                         .build();
-
+                //  Response response = request.;
                 Response response = chain.proceed(chain.request());
-                if (response.code() == 307) {
-                    request = request.newBuilder()
-                            .url(response.header("Location"))
-                            .build();
-                    response = chain.proceed(request);
-                    return response;
+                try {
+                    if (response.code() == 307) {
+                        request = request.newBuilder()
+                                .url(response.header("Location")).addHeader("X-Been", "Intercepted")
+                                .build();
+                        response = chain.proceed(request);
+
+                        return response;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 return chain.proceed(request);
+                //  return response;
             }
         });
 
@@ -128,5 +135,18 @@ public class Api_client_with_member {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences((ctx));
         String member = prefs.getString("member", "");
         return member;
+    }
+
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+        Request request = chain.request();
+        Response response = chain.proceed(chain.request());
+        if (response.code() == 307) {
+            request = request.newBuilder()
+                    .url(response.header("Location"))
+                    .build();
+            response = chain.proceed(request);
+        }
+        return response;
     }
 }
