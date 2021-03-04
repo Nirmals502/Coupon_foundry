@@ -1,5 +1,6 @@
 package com.couponfoundry.View;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.ActivityManager;
@@ -12,12 +13,14 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.couponfoundry.R;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,8 +28,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +49,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String Str_lng = "";
     ImageView Img_back;
     Button Btn_search;
+    PlacesClient placesClient;
+    AutocompleteSupportFragment autocompleteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +75,60 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Str_lat = pref.getString("Latnew", "");
             Str_lng = pref.getString("Lngnew", "");
         }
+        String apiKey = getString(R.string.api_key);
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
 
+        // Create a new Places client instance.
+        placesClient = Places.createClient(this);
+        autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setTypeFilter(TypeFilter.GEOCODE);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG));
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+
+                try {
+                    LatLng Lat_LNG = place.getLatLng();
+                    String Adress = place.getAddress();
+
+                    marker.setPosition(Lat_LNG);
+                    marker.setTitle(Adress);
+                    marker.showInfoWindow();
+                    // mMap.moveCamera(CameraUpdateFactory.newLatLng(Lat_LNG));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Lat_LNG.latitude, Lat_LNG.longitude), 8.0f));
+                    // Enable the zoom controls for the map
+                    mMap.getUiSettings().setZoomControlsEnabled(true);
+                    String Str_lat = String.valueOf(Lat_LNG.latitude);
+                    String Str_lng = String.valueOf(Lat_LNG.longitude);
+                    Edttxt_lat.setText(Str_lat);
+                    Edttxtlon.setText(Str_lng);
+                    Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                    android.location.Address address = geocoder.getFromLocation(Lat_LNG.latitude, Lat_LNG.longitude, 1).get(0);
+                    String country = address.getCountryName();
+                    SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("Latnew", Edttxt_lat.getText().toString());
+                    editor.putString("Lngnew", Edttxtlon.getText().toString());
+                    editor.putString("country_name", country);
+
+                    editor.apply();
+                } catch (NullPointerException | IOException e) {
+                    e.printStackTrace();
+                }
+                //Toast.makeText(getApplicationContext(), place.getName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error.
+                Toast.makeText(getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Edttxt_lat.setText(Str_lat);
         Edttxtlon.setText(Str_lng);
@@ -124,15 +189,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 if (!Edttxt_lat.getText().toString().contentEquals("") || !Edttxtlon.getText().toString().contentEquals("")) {
-//                    SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
-//                    SharedPreferences.Editor editor = prefs.edit();
-//                    editor.putString("Latnew", Edttxt_lat.getText().toString());
-//                    editor.putString("Lngnew", Edttxtlon.getText().toString());
-////                editor.putString("country_name", address.getCountryName());
 //
-//                    editor.apply();
-//                    finish();
-//                    startActivity(getIntent());
                     try {
                         try {
                             double dlat = Double.parseDouble(Edttxt_lat.getText().toString());
@@ -148,9 +205,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     String state = address.getAdminArea();
                                     String country = address.getCountryName();
                                     String postalCode = address.getPostalCode();
-                                    String title = addressstr +"-"+city+"-"+state+"-"+country+"-"+postalCode;
+                                    String title = addressstr + "-" + city + "-" + state + "-" + country + "-" + postalCode;
                                     marker.setTitle(title);
-                                    marker.isInfoWindowShown();
+                                    marker.showInfoWindow();
+                                    autocompleteFragment.setText(title);
+                                    try {
+                                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                                    } catch (Exception e) {
+                                        // TODO: handle exception
+                                    }
 
                                     SharedPreferences prefs = getApplicationContext().getSharedPreferences("Coupon_foundry", 0);
                                     SharedPreferences.Editor editor = prefs.edit();
@@ -163,7 +227,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     e.printStackTrace();
                                 }
 
-                                mMap.animateCamera(CameraUpdateFactory.newLatLng(latlngg));
+                                // mMap.animateCamera(CameraUpdateFactory.newLatLng(latlngg));
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latlngg.latitude, latlngg.longitude), 8.0f));
                             } catch (IndexOutOfBoundsException e) {
                                 e.printStackTrace();
                             }
@@ -214,9 +279,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String state = address.getAdminArea();
                     String country = address.getCountryName();
                     String postalCode = address.getPostalCode();
-                    String title = addressstr +"-"+city+"-"+state+"-"+country+"-"+postalCode;
+                    String title = addressstr + "-" + city + "-" + state + "-" + country + "-" + postalCode;
                     marker.setTitle(title);
                     marker.isInfoWindowShown();
+                    autocompleteFragment.setText(title);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -225,7 +291,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             // mMap.addMarker(new MarkerOptions().position(sydney).draggable(true).title(""));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dlat, dlng), 4.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dlat, dlng), 8.0f));
             // Enable the zoom controls for the map
             mMap.getUiSettings().setZoomControlsEnabled(true);
         } catch (java.lang.IllegalArgumentException e) {
@@ -286,10 +352,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             String state = address.getAdminArea();
                             String country = address.getCountryName();
                             String postalCode = address.getPostalCode();
-                            String title = addressstr +"-"+city+"-"+state+"-"+country+"-"+postalCode;
+                            String title = addressstr + "-" + city + "-" + state + "-" + country + "-" + postalCode;
                             marker.setTitle(title);
                             marker.isInfoWindowShown();
-
+                            autocompleteFragment.setText(title);
                             // marker.setTitle(address.getAdminArea());
                             Edttxt_lat.setText(String.valueOf(latLng.latitude));
                             Edttxtlon.setText(String.valueOf(latLng.longitude));

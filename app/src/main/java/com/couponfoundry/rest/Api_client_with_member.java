@@ -18,7 +18,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Api_client_with_member implements Interceptor {
+public class Api_client_with_member {
     public static Retrofit retrofit = null;
     public static String Client = "z/9n}0YoMDl5";
     public static String Client_Secret = "0nRj$Zb$+UL=";
@@ -46,7 +46,7 @@ public class Api_client_with_member implements Interceptor {
 //        Str_lng = pref.getString("Lng", "");
         Str_lat = pref.getString("Latnew", "novalue");
         // Str_lng = pref.getString("Lngnew", "");
-        if (Str_lat.contentEquals("novalue")) {
+        if (Str_lat.contentEquals("novalue") || Str_lat.contentEquals("")) {
             Str_lat = pref.getString("Lat", "");
             Str_lng = pref.getString("Lng", "");
             Country_name = pref.getString("country_name", "");
@@ -90,7 +90,7 @@ public class Api_client_with_member implements Interceptor {
                 try {
                     if (response.code() == 307) {
                         request = request.newBuilder()
-                                .url(response.header("Location")).addHeader("X-Been", "Intercepted")
+                                .url(response.header("Location"))
                                 .build();
                         response = chain.proceed(request);
 
@@ -137,16 +137,5 @@ public class Api_client_with_member implements Interceptor {
         return member;
     }
 
-    @Override
-    public Response intercept(Chain chain) throws IOException {
-        Request request = chain.request();
-        Response response = chain.proceed(chain.request());
-        if (response.code() == 307) {
-            request = request.newBuilder()
-                    .url(response.header("Location"))
-                    .build();
-            response = chain.proceed(request);
-        }
-        return response;
-    }
+
 }
